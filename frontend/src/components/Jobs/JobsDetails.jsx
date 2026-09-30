@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 import '../../styles/components/JobsDetails.css';
 
 const FALLBACK_JOBS = [
@@ -55,7 +56,7 @@ export default function JobsDetails() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch('http://localhost:5005/api/jobs');
+        const res = await fetch(`${API_BASE_URL}/api/jobs`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {

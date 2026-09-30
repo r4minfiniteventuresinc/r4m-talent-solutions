@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 import '../../styles/components/InsightsDetails.css';
 
 const INSIGHTS_DATA = [
@@ -158,7 +159,7 @@ export default function InsightsDetails() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch('http://localhost:5005/api/articles');
+        const res = await fetch(`${API_BASE_URL}/api/articles`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {

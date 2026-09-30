@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { API_BASE_URL } from '../config/api';
 import JobSingleHero from '../components/Jobs/JobSingleHero';
 import JobSingleView from '../components/Jobs/JobSingleView';
 import AboutCTA from '../components/About/AboutCTA';
@@ -52,7 +53,7 @@ export default function JobSinglePage() {
     const fetchSingleJob = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5005/api/jobs/${id}`);
+        const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.title) {

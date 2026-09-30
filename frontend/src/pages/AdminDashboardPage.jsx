@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config/api';
 import '../styles/pages/AdminDashboardPage.css';
 
 export default function AdminDashboardPage() {
@@ -26,7 +27,7 @@ export default function AdminDashboardPage() {
   // Fetch admin profile from MongoDB database API
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://localhost:5005/api/auth/profile');
+      const res = await fetch(`${API_BASE_URL}/api/auth/profile`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.user) {
@@ -52,7 +53,7 @@ export default function AdminDashboardPage() {
   // Fetch jobs from MongoDB backend API
   const fetchJobs = async () => {
     try {
-      const res = await fetch('http://localhost:5005/api/jobs');
+      const res = await fetch(`${API_BASE_URL}/api/jobs`);
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -92,7 +93,7 @@ export default function AdminDashboardPage() {
   // Fetch articles from MongoDB backend API
   const fetchArticles = async () => {
     try {
-      const res = await fetch('http://localhost:5005/api/articles');
+      const res = await fetch(`${API_BASE_URL}/api/articles`);
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -166,8 +167,8 @@ export default function AdminDashboardPage() {
     try {
       const isEdit = Boolean(editingJobId);
       const url = isEdit
-        ? `http://localhost:5005/api/jobs/${editingJobId}`
-        : 'http://localhost:5005/api/jobs';
+        ? `${API_BASE_URL}/api/jobs/${editingJobId}`
+        : `${API_BASE_URL}/api/jobs`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const parsedReqs = newJob.requirements
@@ -210,7 +211,7 @@ export default function AdminDashboardPage() {
   // Handle Delete Job (DELETE from MongoDB API)
   const handleDeleteJob = async (id) => {
     try {
-      await fetch(`http://localhost:5005/api/jobs/${id}`, {
+      await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: 'DELETE',
       });
       setJobs(jobs.filter((j) => (j.id || j._id) !== id));
@@ -254,8 +255,8 @@ export default function AdminDashboardPage() {
     try {
       const isEdit = Boolean(editingArticleId);
       const url = isEdit
-        ? `http://localhost:5005/api/articles/${editingArticleId}`
-        : 'http://localhost:5005/api/articles';
+        ? `${API_BASE_URL}/api/articles/${editingArticleId}`
+        : `${API_BASE_URL}/api/articles`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -294,7 +295,7 @@ export default function AdminDashboardPage() {
   // Handle Delete Article (DELETE from MongoDB API)
   const handleDeleteArticle = async (id) => {
     try {
-      await fetch(`http://localhost:5005/api/articles/${id}`, {
+      await fetch(`${API_BASE_URL}/api/articles/${id}`, {
         method: 'DELETE',
       });
       setArticles(articles.filter((a) => (a.id || a._id) !== id));
@@ -315,7 +316,7 @@ export default function AdminDashboardPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:5005/api/auth/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

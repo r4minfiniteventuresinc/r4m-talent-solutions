@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config/api';
 import r4mLogo from '../assets/r4m-logo.png';
 import '../styles/pages/AdminLoginPage.css';
 
@@ -17,7 +18,7 @@ export default function AdminLoginPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5005/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
