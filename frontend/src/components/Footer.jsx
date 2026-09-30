@@ -24,7 +24,7 @@ export default function Footer() {
             
             {/* Column 1: Logo & Branding */}
             <div className="r4m-footer__col r4m-footer__col--brand">
-              <Link to="/">
+              <Link to="/admin/login">
                 <img src={r4mLogo} alt="R4M Talent Solutions" className="r4m-footer__logo" />
               </Link>
             </div>

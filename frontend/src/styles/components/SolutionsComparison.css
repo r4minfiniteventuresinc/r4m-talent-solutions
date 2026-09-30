@@ -1,0 +1,290 @@
+/* =========================================================
+   SOLUTIONS COMPARISON SECTION & MATRIX
+   ========================================================= */
+
+.r4m-solutions-comp {
+  padding: 90px 0 110px;
+  background-color: #f8f9fa;
+  font-family: 'Montserrat', sans-serif;
+  color: #111111;
+}
+
+.r4m-solutions-comp__container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header */
+.r4m-solutions-comp__header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 50px;
+}
+
+.r4m-solutions-comp__label {
+  color: #f37021;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.r4m-solutions-comp__title {
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 900;
+  color: #111111;
+  margin: 0 0 16px 0;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.r4m-solutions-comp__subtitle {
+  font-size: 15.5px;
+  color: #555555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 3 Cards Summary */
+.r4m-solutions-comp__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 60px;
+}
+
+.r4m-comp-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 36px 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.r4m-comp-card--highlight {
+  border-top: 4px solid #f37021;
+}
+
+.r4m-comp-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.09);
+}
+
+.r4m-comp-card__tag {
+  color: #f37021;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.r4m-comp-card__title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111111;
+  margin: 0 0 14px 0;
+  line-height: 1.25;
+}
+
+.r4m-comp-card__desc {
+  font-size: 14.5px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.r4m-comp-card__btn {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111111;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s ease;
+}
+
+.r4m-comp-card__btn:hover {
+  color: #f37021;
+}
+
+.r4m-comp-card__btn--primary {
+  color: #f37021;
+}
+
+/* ---------------------------------------------------------
+   Comparison Matrix Table
+   --------------------------------------------------------- */
+.r4m-solutions-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 60px;
+}
+
+.r4m-solutions-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.r4m-solutions-table th,
+.r4m-solutions-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+  font-size: 14.5px;
+}
+
+.r4m-solutions-table th {
+  background: #0d0e10;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.r4m-th-criterion {
+  width: 22%;
+  color: #d1d5db !important;
+}
+
+.r4m-th-service {
+  width: 26%;
+}
+
+.r4m-th-highlight {
+  background: #1e1f22 !important;
+  color: #f37021 !important;
+  border-bottom: 3px solid #f37021 !important;
+}
+
+.r4m-td-criterion {
+  font-weight: 800;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.r4m-td-service {
+  color: #475569;
+  line-height: 1.55;
+}
+
+.r4m-td-highlight {
+  background: rgba(243, 112, 33, 0.03);
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.r4m-solutions-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.r4m-solutions-table tr:hover td.r4m-td-highlight {
+  background-color: rgba(243, 112, 33, 0.08);
+}
+
+.r4m-td-action {
+  padding: 24px;
+  background: #ffffff;
+}
+
+.r4m-table-btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background: #111111;
+  color: #ffffff;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.r4m-table-btn:hover {
+  background: #333333;
+}
+
+.r4m-table-btn--orange {
+  background: #f37021;
+}
+
+.r4m-table-btn--orange:hover {
+  background: #e05e10;
+}
+
+/* ---------------------------------------------------------
+   Need Help Banner
+   --------------------------------------------------------- */
+.r4m-solutions-help-banner {
+  background: #0d0e10;
+  color: #ffffff;
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.r4m-solutions-help-banner__content h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.r4m-solutions-help-banner__content p {
+  font-size: 15px;
+  color: #9ca3af;
+  margin: 0;
+  max-width: 680px;
+  line-height: 1.55;
+}
+
+.r4m-solutions-help-banner__btn {
+  background: #f37021;
+  color: #ffffff;
+  padding: 14px 32px;
+  font-size: 14.5px;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.r4m-solutions-help-banner__btn:hover {
+  background: #e05e10;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .r4m-solutions-comp__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .r4m-solutions-help-banner {
+    padding: 32px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .r4m-solutions-help-banner__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

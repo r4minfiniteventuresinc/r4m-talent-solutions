@@ -1,0 +1,131 @@
+/* =========================================================
+   RECRUITMENT PROCESS OUTSOURCING (RPO) HERO BANNER
+   ========================================================= */
+
+.r4m-rpo-hero {
+  position: relative;
+  width: 100%;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.r4m-rpo-hero__container {
+  max-width: 1436px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.r4m-rpo-hero__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 155px 32px 95px;
+}
+
+/* Breadcrumb */
+.r4m-rpo-hero__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.r4m-rpo-hero__link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.r4m-rpo-hero__link:hover {
+  color: #f37021;
+}
+
+.r4m-rpo-hero__dot {
+  color: #f37021;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.r4m-rpo-hero__current {
+  color: #ffffff;
+}
+
+/* Page Headline */
+.r4m-rpo-hero__title {
+  font-size: clamp(38px, 4.8vw, 62px);
+  font-weight: 900;
+  color: #f37021;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.r4m-rpo-hero__subtitle {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: #d1d5db;
+  max-width: 760px;
+  margin-top: 16px;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.r4m-rpo-hero__underline {
+  width: 65px;
+  height: 4px;
+  background: #ffffff;
+  margin-top: 22px;
+}
+
+/* Geometric Accents */
+.r4m-rpo-hero__accent-grey {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 85px;
+  height: 70%;
+  background: #3e4042;
+  z-index: 1;
+}
+
+.r4m-rpo-hero__accent-orange {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  height: 44px;
+  background: #f37021;
+  z-index: 2;
+}
+
+/* Responsive Styling */
+@media (max-width: 992px) {
+  .r4m-rpo-hero__content {
+    padding: 120px 20px 70px;
+  }
+
+  .r4m-rpo-hero__accent-grey {
+    width: 50px;
+  }
+
+  .r4m-rpo-hero__accent-orange {
+    width: 60%;
+    height: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  .r4m-rpo-hero__content {
+    padding: 100px 16px 60px;
+  }
+
+  .r4m-rpo-hero__title {
+    font-size: 32px;
+  }
+}

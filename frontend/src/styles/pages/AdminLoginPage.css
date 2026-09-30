@@ -1,0 +1,261 @@
+/* =========================================================
+   ADMIN LOGIN PAGE STYLING
+========================================================= */
+
+.r4m-admin-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Breadcrumb */
+.r4m-admin-breadcrumb {
+  padding: 20px 40px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.2px;
+  background: #f8fafc;
+}
+
+.r4m-admin-breadcrumb span {
+  color: #a3a3a3;
+}
+
+/* Main Split Canvas Area */
+.r4m-admin-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  background: #5c5c5e;
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Left Section with SVG Curved White Background */
+.r4m-admin-left-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 52%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.r4m-admin-curve-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.r4m-admin-logo-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 20px 40px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+
+.r4m-admin-logo {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Right Section with Dark Grey Background & Card */
+.r4m-admin-right-bg {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 40px 10%;
+  z-index: 2;
+}
+
+/* Floating White Login Card */
+.r4m-admin-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.r4m-admin-card__title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #f37021;
+  margin: 0 0 10px 0;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.3px;
+}
+
+.r4m-admin-card__subtitle {
+  font-size: 13.5px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 28px 0;
+  font-weight: 500;
+}
+
+/* Input Fields */
+.r4m-admin-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.r4m-admin-input-group {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0 14px;
+  margin-bottom: 18px;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.r4m-admin-input-group:focus-within {
+  border-color: #f37021;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(243, 112, 33, 0.12);
+}
+
+.r4m-admin-input-icon {
+  color: #94a3b8;
+  font-size: 16px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.r4m-admin-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 13px 0;
+  font-size: 14.5px;
+  font-family: 'Montserrat', sans-serif;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.r4m-admin-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Checkbox Row */
+.r4m-admin-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.r4m-admin-remember input[type="checkbox"] {
+  accent-color: #f37021;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.r4m-admin-remember label {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Submit Button */
+.r4m-admin-submit-btn {
+  width: 100%;
+  background: #f37021;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.r4m-admin-submit-btn:hover {
+  background: #e05e10;
+  transform: translateY(-1px);
+}
+
+/* Success Message Box */
+.r4m-admin-success-msg {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.r4m-admin-success-msg i {
+  font-size: 48px;
+  color: #22c55e;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.r4m-admin-success-msg p {
+  font-size: 15px;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+  .r4m-admin-left-bg {
+    width: 60%;
+  }
+
+  .r4m-admin-right-bg {
+    padding: 40px 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .r4m-admin-canvas {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .r4m-admin-left-bg {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: #ffffff;
+  }
+
+  .r4m-admin-curve-svg {
+    display: none;
+  }
+
+  .r4m-admin-right-bg {
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .r4m-admin-breadcrumb {
+    padding: 16px 20px 12px;
+  }
+}

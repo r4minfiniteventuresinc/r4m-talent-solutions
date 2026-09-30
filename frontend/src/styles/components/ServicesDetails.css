@@ -1,0 +1,349 @@
+/* =========================================================
+   SERVICES DETAILS PAGE SECTION
+   ========================================================= */
+
+.r4m-services-page-section {
+  padding: 90px 0 110px;
+  background-color: #f8f9fa;
+  font-family: 'Montserrat', sans-serif;
+  color: #111111;
+}
+
+.r4m-services-page-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Placeholder Box when Services data is waiting to be populated */
+.r4m-services-placeholder {
+  text-align: center;
+  padding: 90px 32px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.r4m-services-placeholder__icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(243, 112, 33, 0.12);
+  color: #f37021;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px;
+}
+
+.r4m-services-placeholder__title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111111;
+  margin-bottom: 12px;
+}
+
+.r4m-services-placeholder__text {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 580px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+.r4m-services-placeholder__btn {
+  background: #f37021;
+  color: #ffffff;
+  padding: 14px 32px;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.25s ease;
+}
+
+.r4m-services-placeholder__btn:hover {
+  background: #e05e10;
+}
+
+/* ---------------------------------------------------------
+   Tab Navigation Bar
+   --------------------------------------------------------- */
+.r4m-services-page-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+  justify-content: center;
+}
+
+.r4m-services-page-tab {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #4b5563;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.25s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.r4m-services-page-tab:hover {
+  border-color: #f37021;
+  color: #f37021;
+}
+
+.r4m-services-page-tab.is-active {
+  background: #f37021;
+  border-color: #f37021;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(243, 112, 33, 0.25);
+}
+
+/* ---------------------------------------------------------
+   Services List & Cards
+   --------------------------------------------------------- */
+.r4m-services-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.r4m-services-detail-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.r4m-services-detail-card--reverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.r4m-services-detail-card--reverse .r4m-services-detail-card__image-wrap {
+  order: 2;
+}
+
+.r4m-services-detail-card--reverse .r4m-services-detail-card__content {
+  order: 1;
+}
+
+.r4m-services-detail-card:hover {
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Wrap */
+.r4m-services-detail-card__image-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  background: #111111;
+  overflow: hidden;
+}
+
+.r4m-services-detail-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.r4m-services-detail-card:hover .r4m-services-detail-card__img {
+  transform: scale(1.03);
+}
+
+.r4m-services-detail-card__badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background-color: #f37021;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+/* Content Area */
+.r4m-services-detail-card__content {
+  padding: 50px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.r4m-services-detail-card__title {
+  font-size: clamp(26px, 2.8vw, 34px);
+  font-weight: 900;
+  color: #111111;
+  margin: 0 0 14px 0;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+
+.r4m-services-detail-card__desc {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0 0 14px 0;
+}
+
+.r4m-services-detail-card__details {
+  font-size: 14.5px;
+  color: #64748b;
+  line-height: 1.65;
+  margin: 0 0 28px 0;
+}
+
+/* Highlights Checklist */
+.r4m-services-detail-card__highlights {
+  background: #f8fafc;
+  border-left: 4px solid #f37021;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.r4m-services-detail-card__highlights-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.r4m-services-detail-card__highlights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.r4m-services-detail-card__highlights li {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.r4m-services-detail-card__highlights li:last-child {
+  margin-bottom: 0;
+}
+
+.orange-check {
+  color: #f37021;
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Action Buttons */
+.r4m-services-detail-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.r4m-services-detail-card__btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  padding: 14px 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 0px;
+  transition: all 0.25s ease;
+}
+
+.r4m-services-detail-card__btn--primary {
+  background: #f37021;
+  color: #ffffff;
+  border: 2px solid #f37021;
+}
+
+.r4m-services-detail-card__btn--primary:hover {
+  background: #e05e10;
+  border-color: #e05e10;
+  transform: translateY(-2px);
+}
+
+.r4m-services-detail-card__btn--outline {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #111111;
+}
+
+.r4m-services-detail-card__btn--outline:hover {
+  background: #333333;
+  border-color: #333333;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 992px) {
+  .r4m-services-detail-card,
+  .r4m-services-detail-card--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .r4m-services-detail-card--reverse .r4m-services-detail-card__image-wrap {
+    order: 1;
+  }
+
+  .r4m-services-detail-card--reverse .r4m-services-detail-card__content {
+    order: 2;
+  }
+
+  .r4m-services-detail-card__image-wrap {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  .r4m-services-detail-card__content {
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .r4m-services-page-section {
+    padding: 60px 0 80px;
+  }
+
+  .r4m-services-detail-card__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .r4m-services-detail-card__btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .r4m-services-detail-card__content {
+    padding: 28px 20px;
+  }
+}

@@ -146,6 +146,8 @@ export default function InsightsDetails() {
   const [activeTab, setActiveTab] = useState(initialCategory || 'All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articles, setArticles] = useState(INSIGHTS_DATA);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (initialCategory) {
@@ -153,21 +155,41 @@ export default function InsightsDetails() {
     }
   }, [initialCategory]);
 
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch('http://localhost:5005/api/articles');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setArticles(data);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch articles from database:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   const categories = ['All', 'For Businesses', 'For Candidates', 'Industry Trends'];
 
-  const filteredArticles = INSIGHTS_DATA.filter((article) => {
+  const filteredArticles = articles.filter((article) => {
     const matchesTab = activeTab === 'All' || article.category === activeTab;
     const matchesSearch =
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.category.toLowerCase().includes(searchQuery.toLowerCase());
+      (article.title && article.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (article.summary && article.summary.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (article.category && article.category.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesTab && matchesSearch;
   });
 
   return (
     <section className="r4m-insights-section">
       <div className="r4m-insights-container">
-        
+
         {/* Controls Header: Category Tabs & Search Bar */}
         <div className="r4m-insights-controls">
           <div className="r4m-insights-tabs">
@@ -221,11 +243,11 @@ export default function InsightsDetails() {
         ) : (
           <div className="r4m-insights-grid">
             {filteredArticles.map((article) => (
-              <article key={article.id} className="r4m-insight-card">
+              <article key={article.id || article._id} className="r4m-insight-card">
                 {/* Image Banner Container with Orange Category Overlay Tag */}
                 <div className="r4m-insight-card__image-wrap">
                   <img
-                    src={article.image}
+                    src={article.image || article.coverImage || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000&auto=format&fit=crop'}
                     alt={article.title}
                     className="r4m-insight-card__img"
                   />
@@ -242,7 +264,7 @@ export default function InsightsDetails() {
                   </h3>
 
                   <p className="r4m-insight-card__summary">
-                    {article.summary}
+                    {article.summary || article.subtitle}
                   </p>
 
                   <div className="r4m-insight-card__footer">
@@ -275,7 +297,7 @@ export default function InsightsDetails() {
 
             <div className="r4m-article-modal__hero">
               <img
-                src={selectedArticle.image}
+                src={selectedArticle.image || selectedArticle.coverImage || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000&auto=format&fit=crop'}
                 alt={selectedArticle.title}
                 className="r4m-article-modal__img"
               />
@@ -286,16 +308,16 @@ export default function InsightsDetails() {
               <div className="r4m-article-modal__meta">
                 <span><i className="bi bi-calendar3"></i> {selectedArticle.date}</span>
                 <span>•</span>
-                <span><i className="bi bi-clock"></i> {selectedArticle.readTime}</span>
+                <span><i className="bi bi-clock"></i> {selectedArticle.readTime || '5 min read'}</span>
                 <span>•</span>
-                <span><i className="bi bi-person"></i> {selectedArticle.author}</span>
+                <span><i className="bi bi-person"></i> {selectedArticle.author || 'Admin R4M'}</span>
               </div>
 
               <h2 className="r4m-article-modal__title">{selectedArticle.title}</h2>
-              <p className="r4m-article-modal__lead">{selectedArticle.summary}</p>
+              <p className="r4m-article-modal__lead">{selectedArticle.summary || selectedArticle.subtitle}</p>
 
               {/* Key Takeaways Box */}
-              {selectedArticle.keyTakeaways && (
+              {selectedArticle.keyTakeaways && selectedArticle.keyTakeaways.length > 0 && (
                 <div className="r4m-article-modal__takeaways">
                   <h4><i className="bi bi-lightbulb"></i> Key Takeaways</h4>
                   <ul>
@@ -308,9 +330,13 @@ export default function InsightsDetails() {
 
               {/* Full Content Paragraphs */}
               <div className="r4m-article-modal__body">
-                {selectedArticle.content.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
+                {Array.isArray(selectedArticle.content) ? (
+                  selectedArticle.content.map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>{selectedArticle.content}</p>
+                )}
               </div>
 
               {/* Modal Footer / Actions */}

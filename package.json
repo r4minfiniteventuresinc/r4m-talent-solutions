@@ -8,5 +8,9 @@
     "dev:backend": "npm --prefix backend run dev",
     "build:frontend": "npm --prefix frontend run build",
     "start:backend": "npm --prefix backend run start"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.4",
+    "mongoose": "^9.10.3"
   }
 }

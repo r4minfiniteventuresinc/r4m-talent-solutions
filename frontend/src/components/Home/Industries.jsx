@@ -1,66 +1,55 @@
+import { Link } from "react-router-dom";
 import "../../styles/components/Industries.css";
 
-const INDUSTRIES_DATA = [
+const INDUSTRIES_SERVED = [
   {
-    id: 1,
     title: "Logistics & Supply Chain",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
+    slug: "logistics-supply-chain",
+    icon: "bi-truck",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 2,
     title: "Manufacturing",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
+    slug: "manufacturing",
+    icon: "bi-gear-fill",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 3,
     title: "Retail & FMCG",
-    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=800&auto=format&fit=crop",
+    slug: "retail-fmcg",
+    icon: "bi-cart-fill",
+    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 4,
     title: "Hospitality, Food & Beverage",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
+    slug: "hospitality-food-beverage",
+    icon: "bi-cup-hot-fill",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 5,
-    title: "Logistics & Supply Chain",
-    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=800&auto=format&fit=crop",
+    title: "Construction & Engineering",
+    slug: "construction-engineering",
+    icon: "bi-hammer",
+    image: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 6,
-    title: "Manufacturing",
-    image: "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop",
+    title: "E-Commerce",
+    slug: "e-commerce",
+    icon: "bi-bag-check-fill",
+    image: "https://images.unsplash.com/photo-1556742049-0a67daf64f42?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 7,
-    title: "Retail & FMCG",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop",
+    title: "Financial Services & FinTech",
+    slug: "financial-services-fintech",
+    icon: "bi-graph-up-arrow",
+    image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: 8,
-    title: "Hospitality, Food & Beverage",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 9,
-    title: "Logistics & Supply Chain",
-    image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 10,
-    title: "Manufacturing",
-    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 11,
-    title: "Retail & FMCG",
-    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 12,
-    title: "Hospitality, Food & Beverage",
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=800&auto=format&fit=crop",
-  },
+    title: "Technology & Digital",
+    slug: "technology-digital",
+    icon: "bi-display",
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop"
+  }
 ];
 
 export default function Industries() {
@@ -78,24 +67,40 @@ export default function Industries() {
           </p>
         </div>
 
-        {/* 4x3 Card Grid */}
+        {/* 3-Column Card Grid matching Target Market style */}
         <div className="r4m-industries__grid">
-          {INDUSTRIES_DATA.map((item) => (
-            <div className="r4m-industry-card" key={item.id}>
+          {INDUSTRIES_SERVED.map((ind, idx) => (
+            <Link
+              to={`/industries/${ind.slug}`}
+              key={idx}
+              className="r4m-industry-card"
+            >
+              {/* Banner Image */}
               <div className="r4m-industry-card__image-wrapper">
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={ind.image}
+                  alt={ind.title}
                   className="r4m-industry-card__img"
                 />
               </div>
-              <div className="r4m-industry-card__title-bar">
-                <h3>{item.title}</h3>
+
+              {/* Overlapping Orange Icon Badge */}
+              <div className="r4m-industry-card__badge">
+                <i className={`bi ${ind.icon}`}></i>
               </div>
-            </div>
+
+              {/* Bottom Title Bar & Arrow */}
+              <div className="r4m-industry-card__title-bar">
+                <h3 className="r4m-industry-card__title">{ind.title}</h3>
+                <span className="r4m-industry-card__arrow" aria-label="Learn more">
+                  <i className="bi bi-arrow-right"></i>
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
     </section>
   );
 }
+

@@ -29,22 +29,22 @@ const SERVICES_ITEMS = [
   {
     title: 'Manpower Outsourcing',
     desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
-    path: '/#services',
+    path: '/manpower-outsourcing',
   },
   {
     title: 'Recruitment Process Outsourcing',
     desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
-    path: '/#services',
+    path: '/recruitment-process-outsourcing',
   },
   {
-    title: 'Specialized & Technical Roles',
+    title: 'Employer of Record',
     desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
-    path: '/#services',
+    path: '/employer-of-record',
   },
   {
     title: 'Find the Right Solutions',
     desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
-    path: '/#services',
+    path: '/compare-solutions',
   },
 ];
 
@@ -52,49 +52,49 @@ const INDUSTRIES_ITEMS = [
   {
     title: 'Logistics & Supply Chain',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/logistics-supply-chain',
   },
   {
     title: 'Manufacturing',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/manufacturing',
   },
   {
     title: 'Retail & FMCG',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/retail-fmcg',
   },
   {
     title: 'Hospitality, Food & Beverage',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/hospitality-food-beverage',
   },
   {
     title: 'Construction & Engineering',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/construction-engineering',
   },
   {
     title: 'E-Commerce',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/e-commerce',
   },
   {
     title: 'Financial Services & FinTech',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/financial-services-fintech',
   },
   {
     title: 'Technology & Digital',
     desc: 'We connect businesses with the right talent through workforce solutions',
-    path: '/#industries',
+    path: '/industries/technology-digital',
   },
 ];
 
 const NAV_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about', hasDropdown: true },
-  { label: 'Services', path: '/#services', hasDropdown: true },
+  { label: 'Services', path: '/services', hasDropdown: true },
   { label: 'Industries', path: '/#industries', hasDropdown: true },
   { label: 'Jobs', path: '/jobs' },
   { label: 'Contact Us', path: '/contact' },
@@ -128,6 +128,12 @@ function Navbar() {
       // Allow single click to navigate directly or open dropdown
       if (link.label === 'About Us') {
         navigate('/about');
+        setActiveDropdown(null);
+        setMobileOpen(false);
+        return;
+      }
+      if (link.label === 'Services') {
+        navigate('/services');
         setActiveDropdown(null);
         setMobileOpen(false);
         return;
@@ -219,19 +225,16 @@ function Navbar() {
                 <p className="r4m-mega__desc">
                   We connect businesses with the right talent through workforce solutions tailored to their needs.
                 </p>
-                <a 
-                  href="/#services" 
+                <Link 
+                  to="/services" 
                   className="r4m-mega__btn" 
-                  onClick={(e) => {
-                    e.preventDefault();
+                  onClick={() => {
                     setActiveDropdown(null);
-                    navigate('/#services');
-                    const el = document.getElementById('services');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    setMobileOpen(false);
                   }}
                 >
                   Explore our services
-                </a>
+                </Link>
               </div>
             )}
 
@@ -278,6 +281,7 @@ function Navbar() {
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveDropdown(null);
+                    setMobileOpen(false);
                     if (item.path === '/our-story') {
                       navigate('/our-story');
                     } else if (item.path === '/mission-vision') {
@@ -286,6 +290,20 @@ function Navbar() {
                       navigate('/core-values');
                     } else if (item.path === '/target-market') {
                       navigate('/target-market');
+                    } else if (item.path.startsWith('/industries')) {
+                      navigate(item.path);
+                    } else if (item.path === '/manpower-outsourcing') {
+                      navigate('/manpower-outsourcing');
+                    } else if (item.path === '/recruitment-process-outsourcing') {
+                      navigate('/recruitment-process-outsourcing');
+                    } else if (item.path === '/employer-of-record') {
+                      navigate('/employer-of-record');
+                    } else if (item.path === '/compare-solutions') {
+                      navigate('/compare-solutions');
+                    } else if (item.path === '/specialized-technical-roles') {
+                      navigate('/employer-of-record');
+                    } else if (item.path === '/services' || item.path.startsWith('/services')) {
+                      navigate('/services');
                     } else if (item.path.startsWith('/about')) {
                       navigate('/about');
                     } else {

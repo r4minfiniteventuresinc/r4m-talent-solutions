@@ -7,7 +7,7 @@ import WorkforceCTA from '../components/Home/WorkforceCTA'
 import ForTalents from '../components/Home/ForTalents'
 import Insights from '../components/Home/Insights'
 import Vision from '../components/Home/Vision'
-import MoveForwardCTA from '../components/MoveForwardCTA'
+import AboutCTA from '../components/About/AboutCTA';
 import Footer from '../components/Footer'
 
 function Home() {
@@ -23,7 +23,7 @@ function Home() {
         <ForTalents />
         <Insights />
         <Vision />
-        <MoveForwardCTA />
+        <AboutCTA />
       </main>
       <Footer />
     </>

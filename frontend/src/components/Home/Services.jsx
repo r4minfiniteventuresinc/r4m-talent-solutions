@@ -22,13 +22,13 @@ const SERVICES_DATA = [
     variant: "card-2",
   },
   {
-    id: "specialized",
-    title: "Specialized & Technical Roles",
-    titleLine1: "Specialized &",
-    titleLine2: "Technical Roles",
+    id: "eor",
+    title: "Employer of Records",
+    titleLine1: "Employer of",
+    titleLine2: "Records",
     description:
-      "Access top-tier technical and specialized talent with niche skills to drive innovation, optimize operations, and achieve technical excellence across your business.",
-    href: "#specialized",
+      "Expand your team globally without administrative burdens. R4M’s Employer of Record (EOR) services handle payroll, compliance, and HR so you can focus on growth.",
+    href: "#eor",
     variant: "card-3",
   },
 ];

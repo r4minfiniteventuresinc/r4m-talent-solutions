@@ -108,22 +108,29 @@ export default function JobSingleView({ job }) {
             {/* About the Role */}
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">About the Role:</h3>
-              <p className="r4m-job-sec__p">{currentJob.aboutRole}</p>
+              <p className="r4m-job-sec__p">{currentJob.aboutRole || currentJob.desc}</p>
             </div>
 
             {/* Responsibilities */}
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">Responsibilities</h3>
               <p className="r4m-job-sec__lead">
-                Assist with recruitment process and work closely with the Recruitment Partners in making sure all procedures are followed and co-ordination of recruitment is fully always covered and under control. Responsibilities will include the following:
+                Responsibilities for this position include the following key deliverables and operational workflows:
               </p>
               <ul className="r4m-job-list">
-                {currentJob.responsibilities.map((item, idx) => (
-                  <li key={idx}>
+                {Array.isArray(currentJob.responsibilities) ? (
+                  currentJob.responsibilities.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="r4m-job-list__bullet">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{item}</span>
+                    <span>{currentJob.responsibilities || 'Execute daily operational workflows and report progress.'}</span>
                   </li>
-                ))}
+                )}
               </ul>
               <p className="r4m-job-sec__note">
                 Other duties which are reasonably within the capabilities of a staff member in this position may need to be performed from time to time, in addition to or instead of the above duties.
@@ -137,12 +144,19 @@ export default function JobSingleView({ job }) {
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">Who you are:</h3>
               <ul className="r4m-job-list">
-                {currentJob.whoYouAre.map((item, idx) => (
-                  <li key={idx}>
+                {Array.isArray(currentJob.whoYouAre) && currentJob.whoYouAre.length > 0 ? (
+                  currentJob.whoYouAre.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="r4m-job-list__bullet">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{item}</span>
+                    <span>{currentJob.whoYouAre || currentJob.requirements || 'Relevant experience and strong communication skills.'}</span>
                   </li>
-                ))}
+                )}
               </ul>
             </div>
 
@@ -150,12 +164,19 @@ export default function JobSingleView({ job }) {
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">Benefits:</h3>
               <ul className="r4m-job-list">
-                {currentJob.benefits.map((item, idx) => (
-                  <li key={idx}>
+                {Array.isArray(currentJob.benefits) && currentJob.benefits.length > 0 ? (
+                  currentJob.benefits.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="r4m-job-list__bullet">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{item}</span>
+                    <span>{currentJob.benefits || 'Competitive salary package, HMO medical coverage, and career growth.'}</span>
                   </li>
-                ))}
+                )}
               </ul>
             </div>
 
