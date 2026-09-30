@@ -748,7 +748,65 @@
   margin-top: 28px;
 }
 
-/* Responsive Layout */
+/* Mobile Navigation Button & Header Styling */
+.r4m-admin-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.r4m-admin-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #1e293b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.r4m-admin-mobile-toggle:hover {
+  background: #f1f5f9;
+  color: #f37021;
+}
+
+.r4m-admin-sidebar-close {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: auto;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.r4m-admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS FOR MOBILE & TABLET
+========================================================= */
+
 @media (max-width: 1100px) {
   .r4m-admin-stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -759,31 +817,101 @@
   }
 }
 
-@media (max-width: 900px) {
-  .r4m-profile-card {
-    grid-template-columns: 1fr;
-    gap: 32px;
+@media (max-width: 992px) {
+  .r4m-admin-mobile-toggle {
+    display: flex;
+  }
+
+  .r4m-admin-sidebar-close {
+    display: block;
+  }
+
+  .r4m-admin-sidebar-overlay {
+    display: block;
   }
 
   .r4m-admin-sidebar {
-    width: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 270px;
+    z-index: 999;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .r4m-admin-sidebar.is-open {
+    transform: translateX(0);
   }
 
   .r4m-admin-sidebar__brand-name,
   .r4m-admin-nav-item span {
-    display: none;
+    display: inline-block !important;
   }
 
   .r4m-admin-nav-item {
-    justify-content: center;
-    padding: 14px;
+    justify-content: flex-start !important;
+    padding: 13px 18px !important;
+  }
+
+  .r4m-admin-topbar {
+    padding: 0 20px;
+  }
+
+  .r4m-admin-topbar__user-email {
+    display: none;
+  }
+
+  .r4m-admin-body {
+    padding: 24px 20px;
+  }
+
+  .r4m-profile-card {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 28px 20px;
+  }
+
+  .r4m-admin-welcome-banner {
+    padding: 32px 24px;
+  }
+
+  .r4m-admin-welcome-banner__circles .circle--1 {
+    right: 20px;
+    top: -60px;
+    width: 180px;
+    height: 180px;
+  }
+
+  .r4m-admin-welcome-banner__circles .circle--2 {
+    right: -60px;
+    bottom: -80px;
+    width: 260px;
+    height: 260px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .r4m-admin-topbar__user-name {
+    font-size: 12px;
+  }
+
+  .r4m-admin-topbar__avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .r4m-admin-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
   .r4m-grid-form,
   .r4m-profile-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .r4m-grid-form .span-2,
@@ -791,11 +919,31 @@
     grid-column: span 1;
   }
 
-  .r4m-admin-body {
-    padding: 20px;
+  .r4m-admin-form-card {
+    padding: 20px 16px;
   }
 
-  .r4m-admin-stats-grid {
-    grid-template-columns: 1fr;
+  .r4m-admin-card-panel {
+    padding: 16px;
+  }
+
+  .r4m-admin-welcome-banner__title {
+    font-size: 22px;
+  }
+
+  .r4m-admin-welcome-banner__subtitle {
+    font-size: 13.5px;
+  }
+
+  .r4m-form-actions,
+  .r4m-profile-btn-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .r4m-primary-btn,
+  .r4m-secondary-btn {
+    width: 100%;
+    text-align: center;
   }
 }

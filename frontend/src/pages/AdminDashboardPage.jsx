@@ -6,6 +6,7 @@ export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'jobs', 'articles', 'profile'
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Admin Profile State
   const [profile, setProfile] = useState({
@@ -359,19 +360,37 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="r4m-dashboard-layout">
+      {/* Mobile Sidebar Overlay Backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="r4m-admin-sidebar-overlay"
+          onClick={() => setIsMobileMenuOpen(false)}
+        ></div>
+      )}
+
       {/* ----------------- SIDEBAR ----------------- */}
-      <aside className="r4m-admin-sidebar">
+      <aside className={`r4m-admin-sidebar ${isMobileMenuOpen ? 'is-open' : ''}`}>
         {/* Sidebar Header Brand (Orange Header matching Image 1) */}
         <div className="r4m-admin-sidebar__brand">
           <div className="r4m-admin-sidebar__logo-circle"></div>
           <span className="r4m-admin-sidebar__brand-name">R4M Talent</span>
+          <button
+            className="r4m-admin-sidebar-close"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <i className="bi bi-x-lg"></i>
+          </button>
         </div>
 
         {/* Navigation Menu */}
         <nav className="r4m-admin-sidebar__nav">
           <button
             className={`r4m-admin-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => {
+              setActiveTab('dashboard');
+              setIsMobileMenuOpen(false);
+            }}
           >
             <i className="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span>
@@ -379,7 +398,10 @@ export default function AdminDashboardPage() {
 
           <button
             className={`r4m-admin-nav-item ${activeTab === 'jobs' ? 'active' : ''}`}
-            onClick={() => setActiveTab('jobs')}
+            onClick={() => {
+              setActiveTab('jobs');
+              setIsMobileMenuOpen(false);
+            }}
           >
             <i className="bi bi-briefcase-fill"></i>
             <span>Add Jobs</span>
@@ -387,7 +409,10 @@ export default function AdminDashboardPage() {
 
           <button
             className={`r4m-admin-nav-item ${activeTab === 'articles' ? 'active' : ''}`}
-            onClick={() => setActiveTab('articles')}
+            onClick={() => {
+              setActiveTab('articles');
+              setIsMobileMenuOpen(false);
+            }}
           >
             <i className="bi bi-journal-text"></i>
             <span>Add Insights / Articles</span>
@@ -395,7 +420,10 @@ export default function AdminDashboardPage() {
 
           <button
             className={`r4m-admin-nav-item ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => {
+              setActiveTab('profile');
+              setIsMobileMenuOpen(false);
+            }}
           >
             <i className="bi bi-person-gear"></i>
             <span>Profile Settings</span>
@@ -414,11 +442,20 @@ export default function AdminDashboardPage() {
       <div className="r4m-admin-main">
         {/* Top Bar (Matching Image 1 & 3) */}
         <header className="r4m-admin-topbar">
-          <div className="r4m-admin-topbar__title">
-            {activeTab === 'dashboard' && 'Dashboard'}
-            {activeTab === 'jobs' && 'Job Postings'}
-            {activeTab === 'articles' && 'Insights & Articles'}
-            {activeTab === 'profile' && 'Account Information'}
+          <div className="r4m-admin-topbar__left">
+            <button
+              className="r4m-admin-mobile-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle Mobile Navigation"
+            >
+              <i className={`bi ${isMobileMenuOpen ? 'bi-x-lg' : 'bi-list'}`}></i>
+            </button>
+            <div className="r4m-admin-topbar__title">
+              {activeTab === 'dashboard' && 'Dashboard'}
+              {activeTab === 'jobs' && 'Job Postings'}
+              {activeTab === 'articles' && 'Insights & Articles'}
+              {activeTab === 'profile' && 'Account Information'}
+            </div>
           </div>
 
           {/* Right User Profile Badge & Dropdown */}
