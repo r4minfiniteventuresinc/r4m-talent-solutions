@@ -14,10 +14,6 @@ export default function AboutUs() {
                                 alt="Right People - R4M Talent Solutions"
                                 className="r4m-about__img"
                             />
-                            <div className="r4m-about__badge r4m-about__badge--orange">
-                                <span>Right People</span>
-                                <div className="r4m-about__badge-pointer"></div>
-                            </div>
                         </div>
 
                         {/* Bottom / Front Image Card */}
@@ -27,10 +23,17 @@ export default function AboutUs() {
                                 alt="Right Opportunity - R4M Talent Solutions"
                                 className="r4m-about__img"
                             />
-                            <div className="r4m-about__badge r4m-about__badge--dark">
-                                <span>Right Opportunity</span>
-                                <div className="r4m-about__badge-pointer"></div>
-                            </div>
+                        </div>
+
+                        {/* Floating Speech Badges (On Top of Both Images) */}
+                        <div className="r4m-about__badge r4m-about__badge--orange">
+                            <span>Right People</span>
+                            <div className="r4m-about__badge-pointer"></div>
+                        </div>
+
+                        <div className="r4m-about__badge r4m-about__badge--dark">
+                            <span>Right Opportunity</span>
+                            <div className="r4m-about__badge-pointer"></div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +66,9 @@ export default function AboutUs() {
                             <span>Learn More</span>
                         </a>
                         <a href="#learn-more" className="r4m-about__btn-icon" aria-label="Learn More Arrow">
-                            <i className="bi bi-arrow-right"></i>
+                            <svg className="r4m-about__arrow-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 25H34M34 25L24 15M34 25L24 35" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
                         </a>
                     </div>
                 </div>

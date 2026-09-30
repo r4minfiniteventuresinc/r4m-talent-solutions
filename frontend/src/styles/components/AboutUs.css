@@ -43,8 +43,7 @@
   top: 0;
   right: 0;
   width: 68%;
-  height: 360px;
-  border-radius: 4px;
+  height: 420px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   background: #e5e5e5;
@@ -54,13 +53,11 @@
 /* Bottom / Front Image Card */
 .r4m-about__card--bottom {
   position: absolute;
-  bottom: 0;
+  bottom: -30px;
   left: 0;
   width: 66%;
   height: 350px;
-  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
   background: #e5e5e5;
   border: 10px solid #ffffff;
   z-index: 2;
@@ -76,51 +73,51 @@
 /* Speech Bubble Badges */
 .r4m-about__badge {
   position: absolute;
-  padding: 12px 26px;
-  border-radius: 30px;
+  padding: 12px 28px;
+  border-radius: 24px;
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 15px;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
   white-space: nowrap;
+  z-index: 20;
 }
 
 .r4m-about__badge--orange {
-  left: -40px;
-  top: 45%;
+  left: 10%;
+  top: 25%;
   background: linear-gradient(135deg, #ff9e59 0%, #f37021 100%);
-  z-index: 10;
 }
 
 .r4m-about__badge--orange .r4m-about__badge-pointer {
   position: absolute;
-  bottom: -6px;
-  right: 28px;
+  bottom: -7px;
+  left: 55%;
+  transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
   border-top: 8px solid #f37021;
 }
 
 .r4m-about__badge--dark {
-  right: -30px;
-  bottom: 35px;
-  background: linear-gradient(135deg, #505050 0%, #323232 100%);
-  z-index: 10;
+  right: 16%;
+  bottom: 8%;
+  background: linear-gradient(135deg, #58585a 0%, #323232 100%);
 }
 
 .r4m-about__badge--dark .r4m-about__badge-pointer {
   position: absolute;
-  bottom: -6px;
-  left: 28px;
+  bottom: -7px;
+  left: 45%;
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
   border-top: 8px solid #323232;
 }
 
@@ -178,43 +175,55 @@
 .r4m-about__cta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .r4m-about__btn {
-  background: #4a4a4a;
+  background: #525252;
   color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 15px;
+  padding: 14px 34px;
+  border-radius: 40px;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.2px;
   text-decoration: none;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
   display: inline-flex;
   align-items: center;
 }
 
 .r4m-about__btn:hover {
-  background: #333333;
+  background: #3a3a3a;
 }
 
 .r4m-about__btn-icon {
-  background: #4a4a4a;
+  background: #525252;
   color: #ffffff;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  position: relative;
+  overflow: hidden;
   text-decoration: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.r4m-about__arrow-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .r4m-about__btn-icon:hover {
-  background: #333333;
-  transform: translateX(4px);
+  background: #3a3a3a;
+}
+
+.r4m-about__btn-icon:hover .r4m-about__arrow-svg {
+  transform: translateX(3px);
+  transition: transform 0.2s ease;
 }
 
 /* Responsive Styles */
