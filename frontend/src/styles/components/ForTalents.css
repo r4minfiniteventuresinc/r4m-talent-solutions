@@ -5,7 +5,7 @@
 .r4m-talents {
   width: 100%;
   background: #3e3e3e;
-  padding: 85px 0 100px;
+  padding: 80px 0 80px;
   font-family: 'Montserrat', sans-serif;
   color: #ffffff;
   position: relative;
@@ -14,7 +14,7 @@
 }
 
 .r4m-talents__container {
-  max-width: 1340px;
+  max-width: 1380px;
   margin: 0 auto;
   padding: 0 32px;
 }
@@ -88,6 +88,9 @@
 
 .r4m-talent-card__icon {
   font-size: 84px;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
   color: #ffffff;
   transition: transform 0.3s ease, color 0.3s ease;
 }
@@ -131,13 +134,13 @@
   text-transform: uppercase;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   display: inline-block;
-  box-shadow: 0 6px 24px rgba(243, 112, 33, 0.35);
+  /* box-shadow: 0 6px 24px rgba(243, 112, 33, 0.35); */
 }
 
 .r4m-talents__btn:hover {
   background: #e05e10;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(243, 112, 33, 0.45);
+  /* box-shadow: 0 10px 30px rgba(243, 112, 33, 0.45); */
 }
 
 /* Responsive Styles */
@@ -147,20 +150,61 @@
   }
 
   .r4m-talents__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 16px;
     margin-bottom: 40px;
+  }
+
+  .r4m-talent-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .r4m-talent-card__icon-wrapper {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .r4m-talent-card__icon {
+    font-size: 42px;
+  }
+
+  .r4m-talent-card__title {
+    text-align: left;
+    font-size: 15px;
+  }
+
+  .r4m-talent-card__title span {
+    display: inline;
+  }
+
+  .r4m-talent-card__title span + span {
+    margin-left: 4px;
   }
 }
 
 @media (max-width: 576px) {
-  .r4m-talents__grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
   .r4m-talents__title {
     font-size: 32px;
+  }
+
+  .r4m-talent-card {
+    padding: 14px 18px;
+    gap: 14px;
+  }
+
+  .r4m-talent-card__icon {
+    font-size: 36px;
+  }
+
+  .r4m-talent-card__title {
+    font-size: 14.5px;
   }
 
   .r4m-talents__btn {

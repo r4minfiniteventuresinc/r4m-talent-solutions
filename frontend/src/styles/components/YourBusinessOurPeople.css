@@ -5,14 +5,15 @@
 .r4m-business-people {
   width: 100%;
   background: #ffffff;
-  padding: 100px 20px 110px;
+  padding: 100px 0 110px;
   font-family: 'Montserrat', sans-serif;
   color: #1c1c1c;
 }
 
 .r4m-business-people__container {
-  max-width: 1220px;
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 0 32px;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 65px;

@@ -5,7 +5,7 @@
 .r4m-workforce {
   width: 100%;
   background: #ffffff;
-  padding: 80px 0 100px;
+  padding: 40px 0 150px;
   font-family: 'Montserrat', sans-serif;
   color: #1c1c1c;
   position: relative;
@@ -31,6 +31,7 @@
 
 .r4m-workforce__title .orange {
   color: #f37021;
+  font-style: italic;
 }
 
 /* Two-column grid */
@@ -114,7 +115,7 @@
   text-transform: uppercase;
   transition: background 0.2s ease, transform 0.2s ease;
   display: inline-block;
-  box-shadow: 0 6px 20px rgba(243, 112, 33, 0.3);
+  /* box-shadow: 0 6px 20px rgba(243, 112, 33, 0.3); */
 }
 
 .r4m-workforce__btn:hover {
@@ -155,7 +156,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(243, 112, 33, 0.25);
+  /* box-shadow: 0 4px 14px rgba(243, 112, 33, 0.25); */
 }
 
 .r4m-workforce-card__icon-wrapper i {

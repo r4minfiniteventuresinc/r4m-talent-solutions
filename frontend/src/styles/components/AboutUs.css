@@ -221,10 +221,10 @@
   background: #3a3a3a;
 }
 
-.r4m-about__btn-icon:hover .r4m-about__arrow-svg {
+/* .r4m-about__btn-icon:hover .r4m-about__arrow-svg {
   transform: translateX(3px);
   transition: transform 0.2s ease;
-}
+} */
 
 /* Responsive Styles */
 @media (max-width: 992px) {
@@ -242,12 +242,30 @@
     max-width: 480px;
   }
 
+  .r4m-about__badge {
+    padding: 8px 18px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
+
   .r4m-about__badge--orange {
-    left: 0;
+    left: 2%;
+    top: 20%;
   }
 
   .r4m-about__badge--dark {
-    right: 0;
+    right: 2%;
+    bottom: 5%;
+  }
+
+  .r4m-about__btn {
+    padding: 10px 24px;
+    font-size: 15px;
+  }
+
+  .r4m-about__btn-icon {
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -267,7 +285,23 @@
     border-width: 6px;
   }
 
+  .r4m-about__badge {
+    padding: 6px 12px;
+    font-size: 11.5px;
+    border-radius: 16px;
+  }
+
   .r4m-about__title {
     font-size: 34px;
+  }
+
+  .r4m-about__btn {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+
+  .r4m-about__btn-icon {
+    width: 36px;
+    height: 36px;
   }
 }

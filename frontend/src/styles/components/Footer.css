@@ -12,13 +12,14 @@
 --------------------------------------------------------- */
 .r4m-footer-cta {
   background: #46484a;
-  padding: 44px 20px;
+  padding: 44px 0;
   color: #ffffff;
 }
 
 .r4m-footer-cta__container {
-  max-width: 1200px;
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 0 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,12 +60,13 @@
 .r4m-footer-main {
   background: #000000;
   color: #ffffff;
-  padding: 65px 20px 30px;
+  padding: 65px 0 30px;
 }
 
 .r4m-footer-main__container {
-  max-width: 1200px;
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 0 32px;
 }
 
 /* 4-Column Grid */

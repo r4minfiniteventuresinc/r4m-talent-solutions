@@ -5,25 +5,25 @@ const TALENT_CATEGORIES = [
     id: "frontline",
     titleLine1: "Frontline & Skilled",
     titleLine2: "Workers",
-    icon: "bi-image",
+    icon: "bxs:wrench",
   },
   {
     id: "early-career",
     titleLine1: "Early-Career",
     titleLine2: "Talent",
-    icon: "bi-image",
+    icon: "fluent:hat-graduation-12-filled",
   },
   {
     id: "experienced",
     titleLine1: "Experienced",
     titleLine2: "Professionals",
-    icon: "bi-image",
+    icon: "bxs:briefcase",
   },
   {
-    id: "employer-of-record",
-    titleLine1: "Employer of",
-    titleLine2: "Records",
-    icon: "bi-image",
+    id: "specialized",
+    titleLine1: "Specialized & Technical",
+    titleLine2: "Roles",
+    icon: "ant-design:code-filled",
   },
 ];
 
@@ -48,7 +48,7 @@ export default function ForTalents() {
           {TALENT_CATEGORIES.map((item) => (
             <div className="r4m-talent-card" key={item.id}>
               <div className="r4m-talent-card__icon-wrapper">
-                <i className={`bi ${item.icon} r4m-talent-card__icon`}></i>
+                <iconify-icon icon={item.icon} class="r4m-talent-card__icon"></iconify-icon>
               </div>
               <h3 className="r4m-talent-card__title">
                 <span>{item.titleLine1}</span>

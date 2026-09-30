@@ -163,8 +163,8 @@
 }
 
 .r4m-industry-card:hover .r4m-industry-card__arrow {
-  background: #f37021;
-  border-color: #f37021;
+  background: #525252;
+  border-color: #525252;
   color: #ffffff;
   transform: translateX(2px);
 }
@@ -209,5 +209,3 @@
     left: 16px;
   }
 }
-
-

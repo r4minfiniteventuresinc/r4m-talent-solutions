@@ -64,8 +64,8 @@
 }
 
 .r4m-job-banner__btn:hover {
-  background: #4a4a4a;
-  transform: translateY(-2px);
+  background: var(--dark-gray);
+  /* transform: translateY(-2px); */
 }
 
 /* Responsive Styles */
