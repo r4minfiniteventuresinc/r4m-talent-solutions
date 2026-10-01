@@ -15,7 +15,7 @@ const INSIGHTS_DATA = [
     badge: "For Candidates",
     title: "Career Advice & Candidate Growth",
     description: "Practical perspectives on career growth, resume building, and job navigation.",
-    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790836653/R4MWebDesign-image50-caASO.png",
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790838651/R4MWebDesign-image51-8oIHu.png",
     link: "/insights?category=For Candidates",
   },
 ];

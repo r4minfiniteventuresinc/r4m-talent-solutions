@@ -17,7 +17,7 @@ const HERO_IMAGES = [
     alt: "Diverse talent solution professionals",
   },
   {
-    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790817356/R4MWebDesign-image29-X8IID.png",
+    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790838665/R4MWebDesign-image53-LdZfU.png",
     alt: "Career growth and hiring consultation",
   },
 ];
