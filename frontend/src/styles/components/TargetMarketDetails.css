@@ -262,13 +262,14 @@
 }
 
 .r4m-tm-industries-container {
-  max-width: 1240px;
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 0 32px;
 }
 
 .r4m-tm-industries__header {
   text-align: left;
-  max-width: 1240px;
+  max-width: 1380px;
   margin: 0 0 44px;
 }
 
@@ -300,10 +301,10 @@
   font-weight: 400;
 }
 
-/* Industries 3-Column Grid */
+/* Industries 4-Column Grid matching homepage Industries */
 .r4m-tm-industries__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px;
 }
 
@@ -351,16 +352,16 @@
 /* Orange Square Icon Badge */
 .r4m-tm-ind-card__badge {
   position: absolute;
-  top: 105px;
-  left: 20px;
-  width: 56px;
-  height: 56px;
+  top: 108px;
+  left: 14px;
+  width: 50px;
+  height: 50px;
   background: #f37021;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 22px;
   z-index: 5;
   border-radius: 0px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -368,42 +369,47 @@
 
 /* Bottom Title & Arrow Bar */
 .r4m-tm-ind-card__bar {
-  padding: 20px 20px 20px 92px;
+  padding: 16px 10px 16px 72px;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 72px;
+  gap: 6px;
+  min-height: 68px;
   border-top: 1px solid #f1f5f9;
 }
 
 .r4m-tm-ind-card__title {
-  font-size: 15.5px;
+  font-size: clamp(11px, 0.85vw, 13.5px);
   font-weight: 800;
   color: #111111;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1;
+  font-family: 'Montserrat', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.3px;
 }
 
-/* Circle Arrow Icon (Matching Learn More Arrow) */
+/* Circle Arrow Icon */
 .r4m-tm-ind-card__arrow {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1px solid #cbd5e1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 14px;
   color: #333333;
   flex-shrink: 0;
   transition: all 0.25s ease;
 }
 
 .r4m-tm-ind-card:hover .r4m-tm-ind-card__arrow {
-  background: #f37021;
-  border-color: #f37021;
+  background: #525252;
+  border-color: #525252;
   color: #ffffff;
   transform: translateX(2px);
 }
@@ -411,6 +417,13 @@
 /* =========================================================
    RESPONSIVE STYLING
 ========================================================= */
+
+@media (max-width: 1200px) {
+  .r4m-tm-industries__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
 
 @media (max-width: 992px) {
   .r4m-tm-cards-grid {

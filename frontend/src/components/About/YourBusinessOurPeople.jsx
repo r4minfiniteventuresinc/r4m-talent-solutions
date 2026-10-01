@@ -4,7 +4,7 @@ export default function YourBusinessOurPeople() {
   return (
     <section className="r4m-business-people">
       <div className="r4m-business-people__container">
-        
+
         {/* Left Column: Text Copy */}
         <div className="r4m-business-people__content">
           <h2 className="r4m-business-people__title">
@@ -39,9 +39,9 @@ export default function YourBusinessOurPeople() {
 
         {/* Right Column: Image */}
         <div className="r4m-business-people__media">
-          <img 
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-            alt="Business team collaborating at R4M Talent Solutions" 
+          <img
+            src="https://res.cloudinary.com/uoueul6i/image/upload/v1790818244/R4MWebDesign-image30-xoXO1.png"
+            alt="Business team collaborating at R4M Talent Solutions"
             className="r4m-business-people__img"
           />
         </div>

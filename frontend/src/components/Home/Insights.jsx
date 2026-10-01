@@ -7,7 +7,7 @@ const INSIGHTS_DATA = [
     badge: "For Businesses",
     title: "Hiring & Workforce Insights",
     description: "Practical perspectives on recruitment, workforce planning, and business growth.",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790836451/R4MWebDesign-image49-inVeS.png",
     link: "/insights?category=For Businesses",
   },
   {
@@ -15,7 +15,7 @@ const INSIGHTS_DATA = [
     badge: "For Candidates",
     title: "Career Advice & Candidate Growth",
     description: "Practical perspectives on career growth, resume building, and job navigation.",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790836653/R4MWebDesign-image50-caASO.png",
     link: "/insights?category=For Candidates",
   },
 ];
