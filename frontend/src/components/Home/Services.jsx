@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../styles/components/Services.css";
 
 const SERVICES_DATA = [
@@ -56,7 +57,7 @@ export default function Services() {
           {SERVICES_DATA.map((service) => (
             <div className="r4m-service-card" key={service.id}>
               {/* Top Graphic Banner Image with Text Overlay */}
-              <div className="r4m-service-card__banner">
+              <Link to={service.href} className="r4m-service-card__banner" style={{ display: 'block', textDecoration: 'none' }}>
                 <img
                   src={service.image}
                   alt={`${service.titleLine1} ${service.titleLine2}`}
@@ -69,15 +70,15 @@ export default function Services() {
                   </h3>
                   <div className="r4m-service-card__title-line"></div>
                 </div>
-              </div>
+              </Link>
 
               {/* Bottom Card Content */}
               <div className="r4m-service-card__content">
                 <p className="r4m-service-card__desc">{service.description}</p>
-                <a href={service.href} className="r4m-service-card__link">
+                <Link to={service.href} className="r4m-service-card__link">
                   <span className="r4m-service-card__link-text">Learn more</span>
                   <span className="r4m-service-card__arrow">→</span>
-                </a>
+                </Link>
               </div>
             </div>
           ))}

@@ -21,7 +21,7 @@ export default function Footer() {
       <div className="r4m-footer-main">
         <div className="r4m-footer-main__container">
           <div className="r4m-footer__grid">
-            
+
             {/* Column 1: Logo & Branding */}
             <div className="r4m-footer__col r4m-footer__col--brand">
               <Link to="/admin/login">
@@ -44,16 +44,16 @@ export default function Footer() {
             <div className="r4m-footer__col">
               <h4 className="r4m-footer__heading">Contact Us</h4>
               <p className="r4m-footer__text">
-                <a href="mailto:info@r4minfiniteventuresinc.com">info@r4minfiniteventuresinc.com</a>
+                <a href="mailto:info@r4minfiniteventuresinc.com">info@r4minfiniteventures.com</a>
               </p>
-              <p className="r4m-footer__text">+63 918 647 9352</p>
+              <p className="r4m-footer__text">+63 917 194 0129</p>
             </div>
 
             {/* Column 4: Office Address */}
             <div className="r4m-footer__col">
               <h4 className="r4m-footer__heading">Office Address</h4>
-              <p className="r4m-footer__text">216 Winland Tower Residences</p>
-              <p className="r4m-footer__text">4 Tomas Morato, Quezon City</p>
+              <p className="r4m-footer__text">216 Winland Tower Residences 4</p>
+              <p className="r4m-footer__text">Tomas Morato, Quezon City</p>
             </div>
 
           </div>

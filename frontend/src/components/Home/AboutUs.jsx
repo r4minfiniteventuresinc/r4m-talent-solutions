@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../styles/components/AboutUs.css";
 
 export default function AboutUs() {
@@ -66,14 +67,14 @@ export default function AboutUs() {
                     </div>
 
                     <div className="r4m-about__cta">
-                        <a href="#learn-more" className="r4m-about__btn">
+                        <Link to="/about" className="r4m-about__btn">
                             <span>Learn More</span>
-                        </a>
-                        <a href="#learn-more" className="r4m-about__btn-icon" aria-label="Learn More Arrow">
+                        </Link>
+                        <Link to="/about" className="r4m-about__btn-icon" aria-label="Learn More Arrow">
                             <svg className="r4m-about__arrow-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0 25H34M34 25L24 15M34 25L24 35" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -40,10 +40,10 @@ export default function Insights() {
           {INSIGHTS_DATA.map((item) => (
             <div className="r4m-insight-card" key={item.id}>
               {/* Top Image Banner with Orange Badge */}
-              <div className="r4m-insight-card__image-wrapper">
+              <Link to={item.link} className="r4m-insight-card__image-wrapper" style={{ display: 'block' }}>
                 <img src={item.image} alt={item.title} className="r4m-insight-card__img" />
                 <div className="r4m-insight-card__badge">{item.badge}</div>
-              </div>
+              </Link>
 
               {/* Bottom Card Content */}
               <div className="r4m-insight-card__content">

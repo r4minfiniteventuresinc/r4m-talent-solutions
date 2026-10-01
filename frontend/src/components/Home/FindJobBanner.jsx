@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../styles/components/FindJobBanner.css";
 
 export default function FindJobBanner() {
@@ -10,9 +11,9 @@ export default function FindJobBanner() {
           Tired of searching for jobs all on your own? Let us do the heavy lifting and find an opportunity that’s right for you. Share your resume with us and we’ll bring jobs that fit your experience and aspiration to you.
         </p>
         <div className="r4m-job-banner__cta">
-          <a href="#jobs" className="r4m-job-banner__btn">
+          <Link to="/jobs" className="r4m-job-banner__btn">
             Get Started
-          </a>
+          </Link>
         </div>
       </div>
     </section>

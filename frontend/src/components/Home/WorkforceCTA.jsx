@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "../../styles/components/WorkforceCTA.css";
 
 const WORKFORCE_FEATURES = [
@@ -53,7 +54,7 @@ export default function WorkforceCTA() {
                   onClick={() => setIsPlaying(true)}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/uoueul6i/image/upload/v1790835103/R4MWebDesign-image46-Sdk6K.png"
                     alt="R4M Workforce Video Poster"
                     className="r4m-workforce__poster-img"
                   />
@@ -67,9 +68,9 @@ export default function WorkforceCTA() {
 
             {/* Request Consultation Button */}
             <div className="r4m-workforce__cta">
-              <a href="#contact" className="r4m-workforce__btn">
+              <Link to="/contact" className="r4m-workforce__btn">
                 REQUEST A CONSULTATION
-              </a>
+              </Link>
             </div>
           </div>
 

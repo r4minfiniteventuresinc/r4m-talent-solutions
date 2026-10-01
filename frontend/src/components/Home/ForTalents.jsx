@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../styles/components/ForTalents.css";
 
 const TALENT_CATEGORIES = [
@@ -43,10 +44,10 @@ export default function ForTalents() {
           </p>
         </div>
 
-        {/* 4-Column Category Items: Simple Icons with No Container / No Background */}
+        {/* 4-Column Category Items */}
         <div className="r4m-talents__grid">
           {TALENT_CATEGORIES.map((item) => (
-            <div className="r4m-talent-card" key={item.id}>
+            <Link to="/jobs" className="r4m-talent-card" key={item.id} style={{ textDecoration: 'none' }}>
               <div className="r4m-talent-card__icon-wrapper">
                 <iconify-icon icon={item.icon} class="r4m-talent-card__icon"></iconify-icon>
               </div>
@@ -54,17 +55,15 @@ export default function ForTalents() {
                 <span>{item.titleLine1}</span>
                 <span>{item.titleLine2}</span>
               </h3>
-            </div>
+            </Link>
           ))}
         </div>
 
-
-
         {/* Explore Opportunities CTA Button */}
         <div className="r4m-talents__cta">
-          <a href="#jobs" className="r4m-talents__btn">
+          <Link to="/jobs" className="r4m-talents__btn">
             EXPLORE OPPORTUNITIES
-          </a>
+          </Link>
         </div>
       </div>
     </section>
