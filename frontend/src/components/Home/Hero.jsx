@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../Navbar";
 import "../../styles/components/Hero.css";
 
@@ -62,8 +63,8 @@ export default function Hero() {
               The right people can reform a business. The right opportunity can transform a life.
             </p>
             <div className="r4m-cta">
-              <a href="#talent" className="r4m-btn r4m-btn--solid">Finds Talent</a>
-              <a href="#jobs" className="r4m-btn r4m-btn--outline">Find Jobs</a>
+              <Link to="/services" className="r4m-btn r4m-btn--solid">Find Talent</Link>
+              <Link to="/jobs" className="r4m-btn r4m-btn--outline">Find Jobs</Link>
             </div>
           </div>
 

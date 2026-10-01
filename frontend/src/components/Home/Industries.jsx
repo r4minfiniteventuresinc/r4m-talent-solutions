@@ -6,49 +6,49 @@ const INDUSTRIES_SERVED = [
     title: "Logistics & Supply Chain",
     slug: "logistics-supply-chain",
     icon: "bi-truck",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790831815/R4MWebDesign-image37-cWZfZ.png"
   },
   {
     title: "Manufacturing",
     slug: "manufacturing",
     icon: "bi-gear-fill",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790832343/R4MWebDesign-image38-vaUqt.png"
   },
   {
     title: "Retail & FMCG",
     slug: "retail-fmcg",
     icon: "bi-cart-fill",
-    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790832409/R4MWebDesign-image39-AjfXk.png"
   },
   {
     title: "Hospitality, Food & Beverage",
     slug: "hospitality-food-beverage",
     icon: "bi-cup-hot-fill",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790832794/R4MWebDesign-image40-Wb8dm.png"
   },
   {
     title: "Construction & Engineering",
     slug: "construction-engineering",
     icon: "bi-hammer",
-    image: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790833017/R4MWebDesign-image41-4UxBp.png"
   },
   {
     title: "E-Commerce",
     slug: "e-commerce",
     icon: "bi-bag-check-fill",
-    image: "https://images.unsplash.com/photo-1556742049-0a67daf64f42?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790833703/R4MWebDesign-image44-Amkqj.png"
   },
   {
     title: "Financial Services & FinTech",
     slug: "financial-services-fintech",
     icon: "bi-graph-up-arrow",
-    image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790833409/R4MWebDesign-image42-4v3du.png"
   },
   {
     title: "Technology & Digital",
     slug: "technology-digital",
     icon: "bi-display",
-    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790833595/R4MWebDesign-image43-USk5y.png"
   }
 ];
 

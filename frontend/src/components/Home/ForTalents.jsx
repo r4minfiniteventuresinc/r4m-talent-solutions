@@ -14,16 +14,16 @@ const TALENT_CATEGORIES = [
     icon: "fluent:hat-graduation-12-filled",
   },
   {
-    id: "experienced",
-    titleLine1: "Experienced",
-    titleLine2: "Professionals",
-    icon: "bxs:briefcase",
-  },
-  {
     id: "specialized",
     titleLine1: "Specialized & Technical",
     titleLine2: "Roles",
     icon: "ant-design:code-filled",
+  },
+  {
+    id: "experienced",
+    titleLine1: "Experienced",
+    titleLine2: "Professionals",
+    icon: "bxs:briefcase",
   },
 ];
 
