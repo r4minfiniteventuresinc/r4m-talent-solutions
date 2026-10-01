@@ -205,6 +205,12 @@
   max-width: 540px;
 }
 
+.r4m-about__subtitle .orange,
+.r4m-about__subtitle .orange {
+  color: #f37021;
+  font-weight: 800;
+}
+
 .r4m-about__body p:last-child {
   margin-bottom: 32px;
 }

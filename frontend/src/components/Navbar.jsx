@@ -139,7 +139,7 @@ function Navbar() {
         return;
       }
     }
-    
+
     if (link.path.startsWith('/#')) {
       const targetId = link.path.replace('/#', '');
       if (window.location.pathname !== '/') {
@@ -172,28 +172,28 @@ function Navbar() {
     <>
       {/* Background Overlay with Backdrop Blur for Content Below */}
       {isDropdownOpen && (
-        <div 
-          className="r4m-mega-overlay" 
+        <div
+          className="r4m-mega-overlay"
           onClick={() => setActiveDropdown(null)}
         />
       )}
 
       {/* Mega Dropdown Container spanning to the TOP of screen */}
       {isDropdownOpen && (
-        <div 
+        <div
           className="r4m-mega-menu"
           onMouseEnter={handleMegaMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div className="r4m-mega-menu__container">
-            
+
             {/* Left Featured Card for About Us */}
             {activeDropdown === 'About Us' && (
               <div className="r4m-mega__featured">
                 <div className="r4m-mega__img-wrapper">
-                  <img 
-                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" 
-                    alt="About R4M" 
+                  <img
+                    src="https://res.cloudinary.com/uoueul6i/image/upload/v1790824406/R4MWebDesign-image32-kWG3D.png"
+                    alt="About R4M"
                     className="r4m-mega__img"
                   />
                 </div>
@@ -201,9 +201,9 @@ function Navbar() {
                 <p className="r4m-mega__desc">
                   We connect businesses with the right talent through workforce solutions tailored to their needs.
                 </p>
-                <Link 
-                  to="/about" 
-                  className="r4m-mega__btn" 
+                <Link
+                  to="/about"
+                  className="r4m-mega__btn"
                   onClick={() => setActiveDropdown(null)}
                 >
                   Learn More
@@ -215,9 +215,9 @@ function Navbar() {
             {activeDropdown === 'Services' && (
               <div className="r4m-mega__featured">
                 <div className="r4m-mega__img-wrapper">
-                  <img 
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
-                    alt="R4M Services" 
+                  <img
+                    src="https://res.cloudinary.com/uoueul6i/image/upload/v1790824415/R4MWebDesign-image33-VRuXk.png"
+                    alt="R4M Services"
                     className="r4m-mega__img"
                   />
                 </div>
@@ -225,9 +225,9 @@ function Navbar() {
                 <p className="r4m-mega__desc">
                   We connect businesses with the right talent through workforce solutions tailored to their needs.
                 </p>
-                <Link 
-                  to="/services" 
-                  className="r4m-mega__btn" 
+                <Link
+                  to="/services"
+                  className="r4m-mega__btn"
                   onClick={() => {
                     setActiveDropdown(null);
                     setMobileOpen(false);
@@ -242,9 +242,9 @@ function Navbar() {
             {activeDropdown === 'Industries' && (
               <div className="r4m-mega__featured">
                 <div className="r4m-mega__img-wrapper">
-                  <img 
-                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" 
-                    alt="R4M Industries" 
+                  <img
+                    src="https://res.cloudinary.com/uoueul6i/image/upload/v1790824424/R4MWebDesign-image34-5wMPk.png"
+                    alt="R4M Industries"
                     className="r4m-mega__img"
                   />
                 </div>
@@ -252,9 +252,9 @@ function Navbar() {
                 <p className="r4m-mega__desc">
                   We connect businesses with the right talent through workforce solutions tailored to their needs.
                 </p>
-                <a 
-                  href="/#industries" 
-                  className="r4m-mega__btn" 
+                <a
+                  href="/#industries"
+                  className="r4m-mega__btn"
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveDropdown(null);
@@ -274,9 +274,9 @@ function Navbar() {
             {/* Right Grid */}
             <div className="r4m-mega__grid">
               {getDropdownItems().map((item, idx) => (
-                <a 
-                  key={idx} 
-                  href={item.path} 
+                <a
+                  key={idx}
+                  href={item.path}
                   className="r4m-mega__item"
                   onClick={(e) => {
                     e.preventDefault();
@@ -329,14 +329,14 @@ function Navbar() {
 
         <nav className={`r4m-menu ${mobileOpen ? 'is-open' : ''}`}>
           {NAV_LINKS.map((link) => (
-            <div 
+            <div
               key={link.label}
               className="r4m-menu__item-wrap"
               onMouseEnter={() => handleMouseEnter(link.label)}
               onMouseLeave={handleMouseLeave}
             >
-              <a 
-                href={link.path} 
+              <a
+                href={link.path}
                 className={`r4m-menu__link ${activeDropdown === link.label ? 'is-active' : ''}`}
                 onClick={(e) => handleNavClick(e, link)}
               >

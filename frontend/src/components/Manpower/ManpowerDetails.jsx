@@ -5,15 +5,15 @@ export default function ManpowerDetails() {
   return (
     <section className="r4m-manpower-details">
       <div className="r4m-manpower-details__container">
-        
+
         {/* Main Content Grid */}
         <div className="r4m-manpower-details__grid">
-          
+
           {/* Left Column: What is Manpower Outsourcing */}
           <div className="r4m-manpower-details__content">
             <span className="r4m-manpower-details__label">OVERVIEW</span>
             <h2 className="r4m-manpower-details__title">What is Manpower Outsourcing?</h2>
-            
+
             <p className="r4m-manpower-details__lead">
               Manpower outsourcing is a strategic business solution where an organization partners with a specialized third-party talent provider to recruit, deploy, and manage skilled personnel for operational needs.
             </p>
@@ -24,7 +24,7 @@ export default function ManpowerDetails() {
 
             {/* Core Pillars Grid */}
             <div className="r4m-manpower-details__pillars">
-              
+
               <div className="r4m-manpower-pillar-card">
                 <div className="r4m-manpower-pillar-card__icon">
                   <i className="bi bi-graph-up-arrow"></i>
@@ -66,7 +66,7 @@ export default function ManpowerDetails() {
             <div className="r4m-manpower-box">
               <div className="r4m-manpower-box__img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1790831815/R4MWebDesign-image37-cWZfZ.png"
                   alt="Manpower Outsourcing Team"
                   className="r4m-manpower-box__img"
                 />

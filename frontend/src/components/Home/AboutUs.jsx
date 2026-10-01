@@ -51,7 +51,7 @@ export default function AboutUs() {
                     </h2>
 
                     <p className="r4m-about__subtitle">
-                        At R4M Talent Solutions, we bring the two together.
+                        At R4M Talent Solutions, we bring the <span className="orange">right people</span> and the <span className="orange">right opportunities</span> together.
                     </p>
 
                     <div className="r4m-about__body">
