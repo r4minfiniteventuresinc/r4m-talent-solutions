@@ -32,7 +32,7 @@ export default function MissionVisionDetails() {
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--2">
               <img
-                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790845218/R4MWebDesign-image58-aIOuu.png"
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790847798/R4MWebDesign-image62-MI0Qn.png"
                 alt="Business meeting"
               />
             </div>
@@ -50,13 +50,13 @@ export default function MissionVisionDetails() {
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--5">
               <img
-                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790846132/R4MWebDesign-image60-AfTd6.png"
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790847603/R4MWebDesign-image61-hJkT3.png"
                 alt="Corporate presentation"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--6">
               <img
-                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790842906/R4MWebDesign-image57-F71aE.png"
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790847882/R4MWebDesign-image63-9mgDU.png"
                 alt="Happy office team"
               />
             </div>
