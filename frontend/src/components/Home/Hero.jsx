@@ -4,19 +4,19 @@ import "../../styles/components/Hero.css";
 
 const HERO_IMAGES = [
   {
-    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790130813/hh-img1-eMydJ.png",
+    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790815575/R4MWebDesign-image26-OO521.png",
     alt: "R4M Talent Solutions team",
   },
   {
-    url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790816367/R4MWebDesign-image28-3QfNh.png",
     alt: "Professional business team collaborating",
   },
   {
-    url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790818244/R4MWebDesign-image30-xoXO1.png",
     alt: "Diverse talent solution professionals",
   },
   {
-    url: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/uoueul6i/image/upload/v1790817356/R4MWebDesign-image29-X8IID.png",
     alt: "Career growth and hiring consultation",
   },
 ];
@@ -36,7 +36,7 @@ export default function Hero() {
       {/* Background Image 2 as an <img> tag positioned at the back */}
       <div className="r4m-hero__bg-wrapper">
         <img
-          src="https://res.cloudinary.com/uoueul6i/image/upload/v1790130895/hh-bg-idbNW.png"
+          src="https://res.cloudinary.com/uoueul6i/image/upload/v1790818693/R4MWebDesign-image31-9r9TA.png"
           alt="Background silhouette"
           className="r4m-hero__bg-img"
         />

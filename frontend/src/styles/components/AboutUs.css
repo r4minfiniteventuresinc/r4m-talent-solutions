@@ -10,6 +10,30 @@
   color: #1c1c1c;
   position: relative;
   z-index: 5;
+  overflow: hidden;
+}
+
+/* Background Diagonal Graphic Slashes (Top Right) */
+.r4m-about__bg-slash {
+  position: absolute;
+  top: -60px;
+  height: 120%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.r4m-about__bg-slash--1 {
+  right: -50px;
+  width: 480px;
+  background: linear-gradient(135deg, rgba(243, 112, 33, 0.12) 0%, rgba(243, 112, 33, 0.02) 65%, transparent 100%);
+  transform: skewX(-26deg);
+}
+
+.r4m-about__bg-slash--2 {
+  right: 220px;
+  width: 220px;
+  background: linear-gradient(135deg, rgba(235, 235, 240, 0.65) 0%, rgba(245, 245, 248, 0.15) 80%, transparent 100%);
+  transform: skewX(-26deg);
 }
 
 .r4m-about__container {
@@ -20,6 +44,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
 /* ------------------ Left Column: Images ------------------ */
@@ -135,6 +161,18 @@
   letter-spacing: 1.5px;
   text-transform: uppercase;
   margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.r4m-about__label::after {
+  content: '';
+  display: inline-block;
+  width: 44px;
+  height: 2.5px;
+  background-color: #f37021;
+  border-radius: 1px;
 }
 
 .r4m-about__title {

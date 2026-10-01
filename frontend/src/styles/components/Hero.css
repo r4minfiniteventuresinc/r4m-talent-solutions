@@ -674,13 +674,12 @@
   align-items: center;
   width: 100%;
   min-height: 120px;
-  gap: 22px;
+  gap: 20px;
 
   /*
-    This pushes the icon/text inward,
-    matching the second reference image.
+    Padding adjusted so text fits cleanly on 2 lines
   */
-  padding: 28px 11%;
+  padding: 28px 7%;
 }
 
 .r4m-feature--1 {
@@ -709,11 +708,11 @@
 
 .r4m-feature p {
   color: #ffffff;
-  font-size: 17px;
+  font-size: 16.5px;
   font-weight: 500;
   line-height: 1.35;
   margin: 0;
-  max-width: 300px;
+  max-width: 420px;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -759,9 +758,9 @@
   .r4m-feature {
     min-height: 120px;
 
-    padding: 28px 11%;
+    padding: 28px 7%;
 
-    gap: 22px;
+    gap: 20px;
   }
 
   .r4m-feature i {
@@ -769,9 +768,11 @@
   }
 
   .r4m-feature p {
-    font-size: 17px;
+    font-size: 16.5px;
 
     line-height: 1.35;
+
+    max-width: 420px;
   }
 
   .r4m-bottom-right {

@@ -19,8 +19,8 @@ export default function OurStoryHero() {
             playsInline
             poster="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
           >
-            <source src="https://cdn.coverr.co/videos/coverr-people-working-in-a-modern-office-5346/1080p.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-corporate-workers-in-a-modern-office-41561-large.mp4" type="video/mp4" />
+            <source src="https://drive.google.com/uc?export=download&id=1Nai-jbdWZ--hHWHkf2Z02dakYhSJ6fxf" type="video/mp4" />
+            <source src="https://drive.usercontent.google.com/download?id=1Nai-jbdWZ--hHWHkf2Z02dakYhSJ6fxf&export=download" type="video/mp4" />
           </video>
           <div className="r4m-story-hero__video-overlay"></div>
         </div>
@@ -82,14 +82,14 @@ export default function OurStoryHero() {
               <i className="bi bi-x-lg"></i>
             </button>
             <div className="r4m-story-modal__video-box">
-              <video 
-                controls 
-                autoPlay 
-                className="r4m-story-modal__video"
-              >
-                <source src="https://cdn.coverr.co/videos/coverr-people-working-in-a-modern-office-5346/1080p.mp4" type="video/mp4" />
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-corporate-workers-in-a-modern-office-41561-large.mp4" type="video/mp4" />
-              </video>
+              <iframe 
+                src="https://drive.google.com/file/d/1Nai-jbdWZ--hHWHkf2Z02dakYhSJ6fxf/preview" 
+                className="r4m-story-modal__video" 
+                allow="autoplay; encrypted-media" 
+                allowFullScreen
+                title="Our Story Video"
+                style={{ width: '100%', height: '100%', minHeight: '450px', border: 0, borderRadius: '12px' }}
+              ></iframe>
             </div>
           </div>
         </div>

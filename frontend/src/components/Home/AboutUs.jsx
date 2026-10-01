@@ -3,6 +3,10 @@ import "../../styles/components/AboutUs.css";
 export default function AboutUs() {
     return (
         <section className="r4m-about" id="about">
+            {/* Background Diagonal Graphic Slashes */}
+            <div className="r4m-about__bg-slash r4m-about__bg-slash--1"></div>
+            <div className="r4m-about__bg-slash r4m-about__bg-slash--2"></div>
+
             <div className="r4m-about__container">
                 {/* Left: Overlapping image cards with floating speech badges */}
                 <div className="r4m-about__media">
@@ -10,7 +14,7 @@ export default function AboutUs() {
                         {/* Top / Back Image Card */}
                         <div className="r4m-about__card r4m-about__card--top">
                             <img
-                                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"
+                                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790827157/R4MWebDesign-image35-fCpfl.png"
                                 alt="Right People - R4M Talent Solutions"
                                 className="r4m-about__img"
                             />
@@ -19,7 +23,7 @@ export default function AboutUs() {
                         {/* Bottom / Front Image Card */}
                         <div className="r4m-about__card r4m-about__card--bottom">
                             <img
-                                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop"
+                                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790827573/R4MWebDesign-image36-nPanm.png"
                                 alt="Right Opportunity - R4M Talent Solutions"
                                 className="r4m-about__img"
                             />
@@ -67,7 +71,7 @@ export default function AboutUs() {
                         </a>
                         <a href="#learn-more" className="r4m-about__btn-icon" aria-label="Learn More Arrow">
                             <svg className="r4m-about__arrow-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 25H34M34 25L24 15M34 25L24 35" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M0 25H34M34 25L24 15M34 25L24 35" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </a>
                     </div>

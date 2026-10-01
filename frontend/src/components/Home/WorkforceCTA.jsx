@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "../../styles/components/WorkforceCTA.css";
 
 const WORKFORCE_FEATURES = [
@@ -24,19 +24,6 @@ const WORKFORCE_FEATURES = [
 
 export default function WorkforceCTA() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef(null);
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play();
-        setIsPlaying(true);
-      }
-    }
-  };
 
   return (
     <section className="r4m-workforce" id="workforce">
@@ -51,27 +38,30 @@ export default function WorkforceCTA() {
         <div className="r4m-workforce__grid">
           {/* Left Column: Video Player + Consultation CTA */}
           <div className="r4m-workforce__media">
-            <div className="r4m-workforce__video-wrapper" onClick={togglePlay}>
-              <video
-                ref={videoRef}
-                className="r4m-workforce__video"
-                poster="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop"
-                playsInline
-                loop
-                onEnded={() => setIsPlaying(false)}
-              >
-                <source
-                  src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-                  type="video/mp4"
-                />
-                Your browser does not support the video tag.
-              </video>
-
-              {/* Play Overlay Button */}
-              {!isPlaying && (
-                <button className="r4m-workforce__play-btn" aria-label="Play Video">
-                  <i className="bi bi-play-fill"></i>
-                </button>
+            <div className="r4m-workforce__video-wrapper">
+              {isPlaying ? (
+                <iframe
+                  src="https://drive.google.com/file/d/1Nai-jbdWZ--hHWHkf2Z02dakYhSJ6fxf/preview"
+                  className="r4m-workforce__iframe"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="R4M Workforce Video"
+                ></iframe>
+              ) : (
+                <div
+                  className="r4m-workforce__poster-container"
+                  onClick={() => setIsPlaying(true)}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop"
+                    alt="R4M Workforce Video Poster"
+                    className="r4m-workforce__poster-img"
+                  />
+                  <div className="r4m-workforce__video-overlay"></div>
+                  <button className="r4m-workforce__play-btn" aria-label="Play Video">
+                    <i className="bi bi-play-fill"></i>
+                  </button>
+                </div>
               )}
             </div>
 
