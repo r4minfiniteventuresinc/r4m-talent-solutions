@@ -116,7 +116,7 @@ export default function TargetMarketDetails() {
             <div className="r4m-tm-card-hero r4m-tm-card-hero--client">
               <div className="r4m-tm-card-hero__stripe r4m-tm-card-hero__stripe--left"></div>
               <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80"
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790848421/R4MWebDesign-image64-QLoQX.png"
                 alt="For Clients"
                 className="r4m-tm-card-hero__bg"
               />
@@ -140,7 +140,7 @@ export default function TargetMarketDetails() {
             <div className="r4m-tm-card-hero r4m-tm-card-hero--candidate">
               <div className="r4m-tm-card-hero__stripe r4m-tm-card-hero__stripe--right"></div>
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80"
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790848664/R4MWebDesign-image65-ocxGw.png"
                 alt="For Candidates"
                 className="r4m-tm-card-hero__bg"
               />
