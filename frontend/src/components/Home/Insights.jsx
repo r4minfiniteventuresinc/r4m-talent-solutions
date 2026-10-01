@@ -7,7 +7,7 @@ const INSIGHTS_DATA = [
     badge: "For Businesses",
     title: "Hiring & Workforce Insights",
     description: "Practical perspectives on recruitment, workforce planning, and business growth.",
-    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790836451/R4MWebDesign-image49-inVeS.png",
+    image: "https://res.cloudinary.com/uoueul6i/image/upload/v1790838403/R4MWebDesign-image52-G53gP.png",
     link: "/insights?category=For Businesses",
   },
   {
