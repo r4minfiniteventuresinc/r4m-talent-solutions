@@ -35,11 +35,11 @@ const CANDIDATE_ITEMS = [
   },
   {
     icon: "bi-briefcase",
-    title: "Experienced Professionals"
+    title: "Technical & Specialized Professionals"
   },
   {
     icon: "bi-star",
-    title: "Senior Leaders & Executives"
+    title: "Experienced Professionals"
   }
 ];
 

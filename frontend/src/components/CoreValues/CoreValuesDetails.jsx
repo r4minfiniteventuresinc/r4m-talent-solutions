@@ -37,19 +37,19 @@ export default function CoreValuesDetails() {
   return (
     <section className="r4m-reform-values">
       <div className="r4m-reform-values__container">
-        
+
         {/* Left Column: Image */}
         <div className="r4m-reform-values__media">
-          <img 
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80" 
-            alt="R4M Core Values Team Collaboration" 
+          <img
+            src="https://res.cloudinary.com/uoueul6i/image/upload/v1790882669/R4MWebDesign-image66-Y8pO8.png"
+            alt="R4M Core Values Team Collaboration"
             className="r4m-reform-values__img"
           />
         </div>
 
         {/* Right Column: R-E-F-O-R-M Acronym Values */}
         <div className="r4m-reform-values__content">
-          
+
           {/* Category Tag Header */}
           <div className="r4m-reform-values__header">
             <span className="r4m-reform-values__tag">OUR CORE VALUES</span>
