@@ -3,13 +3,13 @@ import "../../styles/components/MissionVisionDetails.css";
 export default function MissionVisionDetails() {
   return (
     <div className="r4m-mv-showcase">
-      
+
       {/* =========================================================
          1. OUR MISSION SECTION (Asymmetric Photo Gallery Design)
       ========================================================= */}
       <section className="r4m-mission-gallery">
         <div className="r4m-mission-gallery__container">
-          
+
           {/* Header Block */}
           <div className="r4m-mission-gallery__header">
             <span className="r4m-mission-gallery__tag">OUR MISSION</span>
@@ -25,39 +25,39 @@ export default function MissionVisionDetails() {
           {/* Asymmetric Photo Gallery Grid */}
           <div className="r4m-mission-gallery__grid">
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--1">
-              <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" 
-                alt="Colleagues looking at tablet" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790842422/R4MWebDesign-image54-H1PFK.png"
+                alt="Colleagues looking at tablet"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--2">
-              <img 
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80" 
-                alt="Business meeting" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790845218/R4MWebDesign-image58-aIOuu.png"
+                alt="Business meeting"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--3">
-              <img 
-                src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" 
-                alt="Team discussion" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790842524/R4MWebDesign-image55-msjTs.png"
+                alt="Team discussion"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--4">
-              <img 
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
-                alt="Collaborating around laptop" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790842544/R4MWebDesign-image56-QORHm.png"
+                alt="Collaborating around laptop"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--5">
-              <img 
-                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" 
-                alt="Corporate presentation" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790846132/R4MWebDesign-image60-AfTd6.png"
+                alt="Corporate presentation"
               />
             </div>
             <div className="r4m-mission-gallery__item r4m-mission-gallery__item--6">
-              <img 
-                src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" 
-                alt="Happy office team" 
+              <img
+                src="https://res.cloudinary.com/uoueul6i/image/upload/v1790842906/R4MWebDesign-image57-F71aE.png"
+                alt="Happy office team"
               />
             </div>
           </div>

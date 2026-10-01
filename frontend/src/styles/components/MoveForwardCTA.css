@@ -4,7 +4,7 @@
 
 .r4m-move-forward {
   width: 100%;
-  background: #ffffff;
+  background: #ffff;
   padding: 120px 20px 140px;
   font-family: 'Montserrat', sans-serif;
   position: relative;
@@ -152,7 +152,7 @@
     width: 280px;
     height: 210px;
   }
-  
+
   .r4m-move-forward__img-card--top-right {
     top: -30px;
     right: -10px;
