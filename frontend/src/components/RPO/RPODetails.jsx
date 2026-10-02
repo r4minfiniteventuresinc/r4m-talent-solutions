@@ -5,15 +5,15 @@ export default function RPODetails() {
   return (
     <section className="r4m-rpo-details">
       <div className="r4m-rpo-details__container">
-        
+
         {/* Main Content Grid */}
         <div className="r4m-rpo-details__grid">
-          
+
           {/* Left Column: What is Recruitment Process Outsourcing (RPO) */}
           <div className="r4m-rpo-details__content">
             <span className="r4m-rpo-details__label">OVERVIEW</span>
             <h2 className="r4m-rpo-details__title">What is Recruitment Process Outsourcing (RPO)?</h2>
-            
+
             <p className="r4m-rpo-details__lead">
               Recruitment Process Outsourcing (RPO) is a strategic business model where an enterprise transfers all or part of its recruitment operations to an external talent acquisition specialist.
             </p>
@@ -24,7 +24,7 @@ export default function RPODetails() {
 
             {/* Core Pillars Grid */}
             <div className="r4m-rpo-details__pillars">
-              
+
               <div className="r4m-rpo-pillar-card">
                 <div className="r4m-rpo-pillar-card__icon">
                   <i className="bi bi-diagram-3-fill"></i>
@@ -66,7 +66,7 @@ export default function RPODetails() {
             <div className="r4m-rpo-box">
               <div className="r4m-rpo-box__img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1790848664/R4MWebDesign-image65-ocxGw.png"
                   alt="Recruitment Process Outsourcing"
                   className="r4m-rpo-box__img"
                 />

@@ -68,7 +68,7 @@ export const INDUSTRY_DATA = {
     slug: 'manufacturing',
     title: 'Manufacturing',
     subtitle: 'Powering plant productivity, assembly lines, QA/QC, and industrial production with skilled operational personnel.',
-    heroImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790832343/R4MWebDesign-image38-vaUqt.png',
     lead: 'Modern manufacturing facilities demand high-precision labor, strict quality control, and zero downtime. R4M Talent Solutions provides industrial plants with qualified assembly technicians, machine operators, and production supervisors.',
     description: 'From electronics assembly to heavy industrial manufacturing, our manpower solutions enable factory managers to maintain constant production outputs while meeting safety and labor compliance standards.',
     roles: [
@@ -131,7 +131,7 @@ export const INDUSTRY_DATA = {
     slug: 'retail-fmcg',
     title: 'Retail & FMCG',
     subtitle: 'Scaling store operations, merchandising, brand activation, and retail logistics across fast-moving consumer goods.',
-    heroImage: 'https://images.unsplash.com/photo-1556742049-0a679280b763?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790832409/R4MWebDesign-image39-AjfXk.png',
     lead: 'In the fast-moving consumer goods (FMCG) and retail sectors, brand perception and customer engagement directly drive revenue. R4M supplies vetted retail staff, visual merchandisers, and store operations teams.',
     description: 'We help retail chains, supermarkets, and consumer brands staff stores, execute promotional campaigns, and manage stock replenishment seamlessly during peak shopping periods.',
     roles: [
@@ -193,7 +193,7 @@ export const INDUSTRY_DATA = {
     slug: 'hospitality-food-beverage',
     title: 'Hospitality, Food & Beverage',
     subtitle: 'Delivering exceptional guest experiences with trained kitchen staff, service teams, event crews, and hospitality personnel.',
-    heroImage: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790832794/R4MWebDesign-image40-Wb8dm.png',
     lead: 'Hospitality and F&B businesses thrive on service excellence and warmth. R4M Talent Solutions provides hotels, restaurants, resorts, and catering companies with dependable front-of-house and back-of-house talent.',
     description: 'Whether you require permanent kitchen personnel or flexible banquet crews for large events, we ensure all staff possess valid health cards, sanitation training, and customer-first service attitudes.',
     roles: [
@@ -255,7 +255,7 @@ export const INDUSTRY_DATA = {
     slug: 'construction-engineering',
     title: 'Construction & Engineering',
     subtitle: 'Building industrial, commercial, and infrastructure projects with certified trade specialists and site engineers.',
-    heroImage: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790833017/R4MWebDesign-image41-4UxBp.png',
     lead: 'Complex engineering and construction projects require certified technical personnel who uphold strict safety and quality standards. R4M supplies general contractors, developers, and engineering firms with skilled site labor and technical specialists.',
     description: 'We ensure all site personnel possess required trade certifications, safety training (SO1/SO2/SO3), and medical clearances to keep your job sites compliant and on schedule.',
     roles: [
@@ -317,7 +317,7 @@ export const INDUSTRY_DATA = {
     slug: 'e-commerce',
     title: 'E-Commerce',
     subtitle: 'Accelerating digital storefront fulfillment, order processing, inventory sorting, and customer support.',
-    heroImage: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790833703/R4MWebDesign-image44-Amkqj.png',
     lead: 'The digital commerce boom demands high-speed order fulfillment, accurate inventory sorting, and responsive customer service. R4M Talent Solutions provides specialized workforce solutions tailored for e-commerce platforms and online sellers.',
     description: 'We help e-commerce operations manage double-digit shopping sales (11.11, 12.12), peak order volumes, and daily warehouse sorting while providing omnichannel customer care.',
     roles: [
@@ -379,7 +379,7 @@ export const INDUSTRY_DATA = {
     slug: 'financial-services-fintech',
     title: 'Financial Services & FinTech',
     subtitle: 'Supporting banking, fintech platforms, compliance, accounting, and financial operations with vetted professionals.',
-    heroImage: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790833409/R4MWebDesign-image42-4v3du.png',
     lead: 'Financial institutions, digital banks, and fintech startups require meticulous, compliant, and trustworthy talent. R4M supplies vetted finance, accounting, risk, and customer operations professionals.',
     description: 'We uphold strict background checks, credit evaluations, and confidentiality agreements to ensure your financial operations remain secure and fully compliant with financial regulations.',
     roles: [
@@ -441,7 +441,7 @@ export const INDUSTRY_DATA = {
     slug: 'technology-digital',
     title: 'Technology & Digital',
     subtitle: 'Driving digital transformation with software engineers, IT infrastructure specialists, product managers, and tech support.',
-    heroImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://res.cloudinary.com/uoueul6i/image/upload/v1790833595/R4MWebDesign-image43-USk5y.png',
     lead: 'In the fast-moving digital economy, securing qualified tech talent is a critical growth driver. R4M Talent Solutions connects technology companies, digital agencies, and enterprises with skilled IT and software engineering talent.',
     description: 'Whether you are building a dedicated development team, expanding IT helpdesk support, or hiring specialized tech managers, we deliver verified tech professionals.',
     roles: [

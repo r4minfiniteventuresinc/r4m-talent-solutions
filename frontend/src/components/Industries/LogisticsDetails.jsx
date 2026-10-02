@@ -41,15 +41,15 @@ export default function LogisticsDetails() {
   return (
     <section className="r4m-logistics-details">
       <div className="r4m-logistics-details__container">
-        
+
         {/* Main Content Grid */}
         <div className="r4m-logistics-details__grid">
-          
+
           {/* Left Column: Overview & Industry Value */}
           <div className="r4m-logistics-details__content">
             <span className="r4m-logistics-details__label">INDUSTRY EXCELLENCE</span>
             <h2 className="r4m-logistics-details__title">Workforce Solutions for Logistics & Supply Chain</h2>
-            
+
             <p className="r4m-logistics-details__lead">
               In logistics and supply chain management, operational continuity depends on workforce reliability, speed, and safety compliance. R4M Talent Solutions delivers turnkey staffing models designed to keep your warehouses, fleets, and distribution networks operating at peak performance.
             </p>
@@ -61,7 +61,7 @@ export default function LogisticsDetails() {
             {/* Key Roles We Staff Section */}
             <div className="r4m-logistics-roles-section">
               <h3 className="r4m-logistics-roles-title">Key Talent & Roles We Provide</h3>
-              
+
               <div className="r4m-logistics-roles-grid">
                 {LOGISTICS_ROLES.map((group, idx) => (
                   <div className="r4m-logistics-role-card" key={idx}>
@@ -87,7 +87,7 @@ export default function LogisticsDetails() {
             {/* 4 Pillars of R4M Logistics Staffing */}
             <div className="r4m-logistics-pillars">
               <h3 className="r4m-logistics-pillars-title">Why Logistics Leaders Partner With R4M</h3>
-              
+
               <div className="r4m-logistics-pillars-grid">
                 <div className="r4m-logistics-pillar">
                   <div className="r4m-logistics-pillar__icon">
@@ -130,7 +130,7 @@ export default function LogisticsDetails() {
             <div className="r4m-logistics-box">
               <div className="r4m-logistics-box__img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1790831815/R4MWebDesign-image37-cWZfZ.png"
                   alt="Logistics and Supply Chain Workforce"
                   className="r4m-logistics-box__img"
                 />
