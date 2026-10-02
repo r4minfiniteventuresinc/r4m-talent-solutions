@@ -118,7 +118,7 @@
   justify-content: center;
   font-size: 26px;
   flex-shrink: 0;
-  box-shadow: 0 6px 18px rgba(243, 112, 33, 0.3);
+  /* box-shadow: 0 6px 18px rgba(243, 112, 33, 0.3); */
 }
 
 .r4m-story-pillar__title {

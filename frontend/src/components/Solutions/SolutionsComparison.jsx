@@ -56,7 +56,7 @@ export default function SolutionsComparison() {
   return (
     <section className="r4m-solutions-comp">
       <div className="r4m-solutions-comp__container">
-        
+
         {/* Header Block */}
         <div className="r4m-solutions-comp__header">
           <span className="r4m-solutions-comp__label">SERVICE COMPARISON</span>
@@ -68,7 +68,7 @@ export default function SolutionsComparison() {
 
         {/* 3 Featured Service Cards Summary */}
         <div className="r4m-solutions-comp__cards">
-          
+
           {/* Card 1: Manpower */}
           <div className="r4m-comp-card">
             <span className="r4m-comp-card__tag">OPERATIONAL STAFFING</span>
@@ -114,8 +114,8 @@ export default function SolutionsComparison() {
               <tr>
                 <th className="r4m-th-criterion">Key Criteria</th>
                 <th className="r4m-th-service">Manpower Outsourcing</th>
-                <th className="r4m-th-service r4m-th-highlight">Recruitment Process Outsourcing (RPO)</th>
-                <th className="r4m-th-service">Employer of Record (EOR)</th>
+                <th className="r4m-th-service r4m-th-highlight">Recruitment Process Outsourcing</th>
+                <th className="r4m-th-service">Employer of Record</th>
               </tr>
             </thead>
             <tbody>

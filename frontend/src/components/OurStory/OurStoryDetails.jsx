@@ -12,7 +12,7 @@ const STORY_PILLARS = [
     desc: "We create opportunities that help people grow, succeed, and build better futures."
   },
   {
-    icon: "bi-handshake-fill",
+    icon: "bi-link-45deg",
     title: "Stronger Together",
     desc: "We build partnerships that help businesses and people move forward together."
   }
