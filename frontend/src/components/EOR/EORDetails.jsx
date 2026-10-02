@@ -5,15 +5,15 @@ export default function EORDetails() {
   return (
     <section className="r4m-eor-details">
       <div className="r4m-eor-details__container">
-        
+
         {/* Main Content Grid */}
         <div className="r4m-eor-details__grid">
-          
+
           {/* Left Column: What is Employer of Record (EOR) */}
           <div className="r4m-eor-details__content">
             <span className="r4m-eor-details__label">OVERVIEW</span>
             <h2 className="r4m-eor-details__title">What is Employer of Record (EOR)?</h2>
-            
+
             <p className="r4m-eor-details__lead">
               An Employer of Record (EOR) is a legal service provider that officially hires, pays, and manages employment compliance for personnel on behalf of another company.
             </p>
@@ -24,7 +24,7 @@ export default function EORDetails() {
 
             {/* Core Pillars Grid */}
             <div className="r4m-eor-details__pillars">
-              
+
               <div className="r4m-eor-pillar-card">
                 <div className="r4m-eor-pillar-card__icon">
                   <i className="bi bi-shield-lock-fill"></i>
@@ -66,7 +66,7 @@ export default function EORDetails() {
             <div className="r4m-eor-box">
               <div className="r4m-eor-box__img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1790920210/R4MWebDesign-image10-Kt6lH.png"
                   alt="Employer of Record Solutions"
                   className="r4m-eor-box__img"
                 />
