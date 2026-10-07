@@ -66,7 +66,7 @@ export default function EORDetails() {
             <div className="r4m-eor-box">
               <div className="r4m-eor-box__img-wrap">
                 <img
-                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1790920210/R4MWebDesign-image10-Kt6lH.png"
+                  src="https://res.cloudinary.com/uoueul6i/image/upload/v1791172138/R4MWebDesign-image67-r4LLZ.png"
                   alt="Employer of Record Solutions"
                   className="r4m-eor-box__img"
                 />
