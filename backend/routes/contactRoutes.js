@@ -1,5 +1,5 @@
 import express from 'express';
-import fetch from 'node-fetch';
+// Using native fetch (Node 18+); no need for node-fetch
 
 const router = express.Router();
 
