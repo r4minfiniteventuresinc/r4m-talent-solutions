@@ -8,6 +8,7 @@ import articleRoutes from './routes/articleRoutes.js';
 import User from './models/User.js';
 import Job from './models/Job.js';
 import Article from './models/Article.js';
+import contactRoutes from './routes/contactRoutes.js';
 import bcrypt from 'bcryptjs';
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({

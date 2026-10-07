@@ -16,9 +16,23 @@ export default function ContactDetails() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
+    // Send form data to backend contact endpoint
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || ''}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        console.error('Failed to send contact email', await response.json());
+      }
+    } catch (err) {
+      console.error('Error sending contact email', err);
+    }
+    // Reset form after a short delay
     setTimeout(() => {
       setSubmitted(false);
       setFormData({

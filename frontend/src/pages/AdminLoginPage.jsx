@@ -8,6 +8,7 @@ export default function AdminLoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -98,13 +99,21 @@ export default function AdminLoginPage() {
               <div className="r4m-admin-input-group">
                 <i className="bi bi-lock r4m-admin-input-icon"></i>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="r4m-admin-input"
                 />
+                <button
+                  type="button"
+                  className="r4m-admin-password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  <i className={`bi ${showPassword ? 'bi-eye-fill' : 'bi-eye-slash-fill'}`}></i>
+                </button>
               </div>
 
               {/* Remember Me Checkbox */}
