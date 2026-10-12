@@ -1,4 +1,11 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
@@ -20,7 +27,11 @@ connectDB();
 // Middleware
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, 'http://localhost:5173'].filter(Boolean),
+    origin: [
+      process.env.FRONTEND_URL,
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+    ].filter(Boolean),
   })
 );
 app.use(express.json());

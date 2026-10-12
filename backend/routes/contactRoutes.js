@@ -35,6 +35,7 @@ router.post('/', async (req, res) => {
       body: JSON.stringify({
         from: 'onboarding@resend.dev',
         to: 'r4minfiniteventures@gmail.com', // destination email
+        reply_to: email,
         subject: `Contact Form: ${subject}`,
         html: htmlContent,
       }),

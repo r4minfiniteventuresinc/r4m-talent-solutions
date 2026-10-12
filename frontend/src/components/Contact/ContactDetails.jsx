@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import '../../styles/components/ContactDetails.css';
 
 export default function ContactDetails() {
@@ -10,6 +11,8 @@ export default function ContactDetails() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,31 +21,39 @@ export default function ContactDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Send form data to backend contact endpoint
+    setLoading(true);
+    setErrorMessage('');
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/contact`, {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+
       if (!response.ok) {
-        console.error('Failed to send contact email', await response.json());
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to send message. Please try again.');
       }
+
+      setSubmitted(true);
+      // Reset form after a short delay
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: 'Client Inquiry',
+          message: ''
+        });
+      }, 5000);
     } catch (err) {
-      console.error('Error sending contact email', err);
+      console.error('Error sending contact email:', err);
+      setErrorMessage(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    // Reset form after a short delay
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: 'Client Inquiry',
-        message: ''
-      });
-    }, 4000);
   };
 
   return (
@@ -199,8 +210,23 @@ export default function ContactDetails() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="r4m-contact-form__btn">
-                  Send Message <i className="bi bi-send-fill"></i>
+                {errorMessage && (
+                  <div className="r4m-contact-form__error">
+                    <i className="bi bi-exclamation-triangle-fill"></i>
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
+                <button type="submit" className="r4m-contact-form__btn" disabled={loading}>
+                  {loading ? (
+                    <>
+                      Sending Message... <i className="bi bi-arrow-repeat spin"></i>
+                    </>
+                  ) : (
+                    <>
+                      Send Message <i className="bi bi-send-fill"></i>
+                    </>
+                  )}
                 </button>
               </form>
             )}
