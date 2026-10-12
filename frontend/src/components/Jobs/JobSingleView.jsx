@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 import r4mLogo from '../../assets/r4m-logo.png';
+import '../../styles/components/JobsDetails.css';
 import '../../styles/components/JobSingleView.css';
 
 export default function JobSingleView({ job }) {
   const [isSaved, setIsSaved] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [appliedSuccess, setAppliedSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [applyError, setApplyError] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
   const [applicant, setApplicant] = useState({
     name: '',
@@ -72,14 +76,46 @@ export default function JobSingleView({ job }) {
     ]
   };
 
-  const handleApplySubmit = (e) => {
+  const handleApplySubmit = async (e) => {
     e.preventDefault();
-    setAppliedSuccess(true);
-    setTimeout(() => {
-      setAppliedSuccess(false);
-      setIsModalOpen(false);
-      setApplicant({ name: '', email: '', phone: '', resume: '', message: '' });
-    }, 3500);
+    setSubmitting(true);
+    setApplyError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/jobs/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jobId: currentJob._id || currentJob.id,
+          jobTitle: currentJob.title,
+          jobLocation: currentJob.location,
+          jobType: currentJob.type,
+          name: applicant.name,
+          email: applicant.email,
+          phone: applicant.phone,
+          resume: applicant.resume,
+          message: applicant.message,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit application. Please check your inputs and try again.');
+      }
+
+      setAppliedSuccess(true);
+      setTimeout(() => {
+        setAppliedSuccess(false);
+        setIsModalOpen(false);
+        setApplicant({ name: '', email: '', phone: '', resume: '', message: '' });
+      }, 4000);
+    } catch (err) {
+      console.error('Job application submission error:', err);
+      setApplyError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleCopyLink = () => {
@@ -398,8 +434,23 @@ export default function JobSingleView({ job }) {
                     ></textarea>
                   </div>
 
-                  <button type="submit" className="r4m-job-modal__submit">
-                    Submit Application <i className="bi bi-send-fill"></i>
+                  {applyError && (
+                    <div className="r4m-job-modal__error">
+                      <i className="bi bi-exclamation-triangle-fill"></i>
+                      <span>{applyError}</span>
+                    </div>
+                  )}
+
+                  <button type="submit" className="r4m-job-modal__submit" disabled={submitting}>
+                    {submitting ? (
+                      <>
+                        Submitting Application... <i className="bi bi-arrow-repeat spin"></i>
+                      </>
+                    ) : (
+                      <>
+                        Submit Application <i className="bi bi-send-fill"></i>
+                      </>
+                    )}
                   </button>
                 </form>
               </>

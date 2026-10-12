@@ -49,6 +49,8 @@ export default function JobsDetails() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedJob, setSelectedJob] = useState(null);
   const [appliedSuccess, setAppliedSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [applyError, setApplyError] = useState('');
   const [applicant, setApplicant] = useState({ name: '', email: '', phone: '', resume: '', message: '' });
 
   const categories = ['All', 'Logistics', 'Technology', 'Retail', 'Manufacturing', 'Finance'];
@@ -87,14 +89,48 @@ export default function JobsDetails() {
     return matchesCategory && matchesSearch;
   });
 
-  const handleApply = (e) => {
+  const handleApply = async (e) => {
     e.preventDefault();
-    setAppliedSuccess(true);
-    setTimeout(() => {
-      setAppliedSuccess(false);
-      setSelectedJob(null);
-      setApplicant({ name: '', email: '', phone: '', resume: '', message: '' });
-    }, 3500);
+    if (!selectedJob) return;
+
+    setSubmitting(true);
+    setApplyError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/jobs/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jobId: selectedJob._id || selectedJob.id,
+          jobTitle: selectedJob.title,
+          jobLocation: selectedJob.location,
+          jobType: selectedJob.type,
+          name: applicant.name,
+          email: applicant.email,
+          phone: applicant.phone,
+          resume: applicant.resume,
+          message: applicant.message,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit application. Please check your inputs and try again.');
+      }
+
+      setAppliedSuccess(true);
+      setTimeout(() => {
+        setAppliedSuccess(false);
+        setSelectedJob(null);
+        setApplicant({ name: '', email: '', phone: '', resume: '', message: '' });
+      }, 4000);
+    } catch (err) {
+      console.error('Job application submission error:', err);
+      setApplyError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -271,8 +307,23 @@ export default function JobsDetails() {
                     ></textarea>
                   </div>
 
-                  <button type="submit" className="r4m-job-modal__submit">
-                    Submit Application Form <i className="bi bi-send-fill"></i>
+                  {applyError && (
+                    <div className="r4m-job-modal__error">
+                      <i className="bi bi-exclamation-triangle-fill"></i>
+                      <span>{applyError}</span>
+                    </div>
+                  )}
+
+                  <button type="submit" className="r4m-job-modal__submit" disabled={submitting}>
+                    {submitting ? (
+                      <>
+                        Submitting Application... <i className="bi bi-arrow-repeat spin"></i>
+                      </>
+                    ) : (
+                      <>
+                        Submit Application Form <i className="bi bi-send-fill"></i>
+                      </>
+                    )}
                   </button>
                 </form>
               </>

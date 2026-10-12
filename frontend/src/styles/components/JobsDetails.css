@@ -353,9 +353,26 @@
   margin-top: 6px;
 }
 
-.r4m-job-modal__submit:hover {
+.r4m-job-modal__submit:hover:not(:disabled) {
   background: #e05e10;
   border-color: #e05e10;
+}
+
+.r4m-job-modal__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.r4m-job-modal__error {
+  background: #fef2f2;
+  border: 1px solid #ef4444;
+  color: #b91c1c;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .r4m-job-modal__success {
