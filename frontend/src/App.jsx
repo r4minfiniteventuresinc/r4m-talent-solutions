@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import AboutUsPage from './pages/AboutUsPage';
 import OurStoryPage from './pages/OurStoryPage';
@@ -24,6 +25,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/index.html" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/our-story" element={<OurStoryPage />} />

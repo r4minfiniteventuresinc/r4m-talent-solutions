@@ -124,6 +124,8 @@ function Navbar() {
   };
 
   const handleNavClick = (e, link) => {
+    e.preventDefault();
+
     if (link.label === 'About Us' || link.label === 'Services' || link.label === 'Industries') {
       // Allow single click to navigate directly or open dropdown
       if (link.label === 'About Us') {
