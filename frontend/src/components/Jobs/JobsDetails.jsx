@@ -81,11 +81,11 @@ export default function JobsDetails() {
 
   const filteredJobs = jobs.filter((job) => {
     const jobCat = job.category || job.department || '';
-    const matchesCategory = selectedCategory === 'All' || 
-                            jobCat.toLowerCase().includes(selectedCategory.toLowerCase());
-    const matchesSearch = job.title.toLowerCase().includes(search.toLowerCase()) || 
-                          job.location.toLowerCase().includes(search.toLowerCase()) ||
-                          (job.desc && job.desc.toLowerCase().includes(search.toLowerCase()));
+    const matchesCategory = selectedCategory === 'All' ||
+      jobCat.toLowerCase().includes(selectedCategory.toLowerCase());
+    const matchesSearch = job.title.toLowerCase().includes(search.toLowerCase()) ||
+      job.location.toLowerCase().includes(search.toLowerCase()) ||
+      (job.desc && job.desc.toLowerCase().includes(search.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -136,7 +136,7 @@ export default function JobsDetails() {
   return (
     <section className="r4m-jobs-details" id="jobs">
       <div className="r4m-jobs-details__container">
-        
+
         {/* Top Header Block */}
         <div className="r4m-jobs-details__header">
           <span className="r4m-jobs-details__tag">CAREER OPPORTUNITIES</span>
@@ -152,9 +152,9 @@ export default function JobsDetails() {
         <div className="r4m-jobs-controls">
           <div className="r4m-jobs-search-box">
             <i className="bi bi-search r4m-search-icon"></i>
-            <input 
-              type="text" 
-              placeholder="Search jobs by title, department, or location..." 
+            <input
+              type="text"
+              placeholder="Search jobs by title, department, or location..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="r4m-jobs-search-input"
@@ -196,7 +196,7 @@ export default function JobsDetails() {
                 </div>
 
                 <h3 className="r4m-job-card__title">{job.title}</h3>
-                
+
                 <div className="r4m-job-card__meta">
                   <span><i className="bi bi-geo-alt"></i> {job.location}</span>
                   <span><i className="bi bi-folder2-open"></i> {job.department || job.category}</span>
@@ -205,7 +205,7 @@ export default function JobsDetails() {
                 <p className="r4m-job-card__desc">{job.desc || job.aboutRole}</p>
 
                 <div className="r4m-job-card__footer">
-                  <Link 
+                  <Link
                     to={`/jobs/${job.id || job._id}`}
                     className="r4m-job-card__btn"
                   >
@@ -223,8 +223,8 @@ export default function JobsDetails() {
       {selectedJob && (
         <div className="r4m-job-modal" onClick={() => setSelectedJob(null)}>
           <div className="r4m-job-modal__content" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="r4m-job-modal__close" 
+            <button
+              className="r4m-job-modal__close"
               onClick={() => setSelectedJob(null)}
               aria-label="Close application form"
             >
@@ -248,62 +248,71 @@ export default function JobsDetails() {
                 <form className="r4m-job-modal__form" onSubmit={handleApply}>
                   <div className="r4m-form-group">
                     <label htmlFor="modal-name">Full Name *</label>
-                    <input 
+                    <input
                       id="modal-name"
-                      type="text" 
-                      required 
-                      placeholder="Enter your full name" 
-                      value={applicant.name} 
-                      onChange={(e) => setApplicant({ ...applicant, name: e.target.value })} 
+                      type="text"
+                      required
+                      placeholder="Enter your full name"
+                      value={applicant.name}
+                      onChange={(e) => setApplicant({ ...applicant, name: e.target.value })}
                     />
                   </div>
 
                   <div className="r4m-form-row">
                     <div className="r4m-form-group">
                       <label htmlFor="modal-email">Email Address *</label>
-                      <input 
+                      <input
                         id="modal-email"
-                        type="email" 
-                        required 
-                        placeholder="name@example.com" 
-                        value={applicant.email} 
-                        onChange={(e) => setApplicant({ ...applicant, email: e.target.value })} 
+                        type="email"
+                        required
+                        placeholder="name@example.com"
+                        value={applicant.email}
+                        onChange={(e) => setApplicant({ ...applicant, email: e.target.value })}
                       />
                     </div>
 
                     <div className="r4m-form-group">
                       <label htmlFor="modal-phone">Phone Number *</label>
-                      <input 
+                      <input
                         id="modal-phone"
-                        type="tel" 
-                        required 
-                        placeholder="+63 900 000 0000" 
-                        value={applicant.phone} 
-                        onChange={(e) => setApplicant({ ...applicant, phone: e.target.value })} 
+                        type="tel"
+                        inputMode="numeric"
+                        required
+                        maxLength={11}
+                        pattern="09[0-9]{9}"
+                        title="Enter an 11-digit number that starts with 09, like 09693163875"
+                        placeholder="09693163875"
+                        value={applicant.phone}
+                        onChange={(e) =>
+                          setApplicant({
+                            ...applicant,
+                            phone: e.target.value.replace(/\D/g, '').slice(0, 11),
+                          })
+                        }
                       />
                     </div>
                   </div>
 
                   <div className="r4m-form-group">
                     <label htmlFor="modal-resume">Resume / Portfolio URL *</label>
-                    <input 
+                    <input
                       id="modal-resume"
-                      type="text" 
+                      type="text"
                       required
-                      placeholder="Paste your Google Drive, Dropbox, PDF, or LinkedIn URL" 
-                      value={applicant.resume} 
-                      onChange={(e) => setApplicant({ ...applicant, resume: e.target.value })} 
+                      placeholder="Paste your Google Drive, Dropbox, PDF, or LinkedIn URL"
+                      value={applicant.resume}
+                      onChange={(e) => setApplicant({ ...applicant, resume: e.target.value })}
                     />
                   </div>
 
                   <div className="r4m-form-group">
                     <label htmlFor="modal-message">Cover Note / Additional Comments</label>
-                    <textarea 
+                    <textarea
                       id="modal-message"
                       rows="3"
-                      placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit..." 
-                      value={applicant.message} 
-                      onChange={(e) => setApplicant({ ...applicant, message: e.target.value })} 
+                      placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+                      value={applicant.message}
+                      onChange={(e) => setApplicant({ ...applicant, message: e.target.value })}
                     ></textarea>
                   </div>
 

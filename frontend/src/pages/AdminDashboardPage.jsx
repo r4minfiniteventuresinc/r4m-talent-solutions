@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config/api';
+import RichTextEditor from '../components/Admin/RichTextEditor';
 import '../styles/pages/AdminDashboardPage.css';
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'jobs', 'articles', 'profile'
+  const [activeTab, setActiveTab] = useState('jobs'); // 'dashboard', 'jobs', 'articles', 'profile'
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -46,53 +47,517 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Jobs State
+  // Auth Header Helper
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  };
+
+  // Toast State
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3800);
+  };
+
+  // Jobs State & Server Aggregated Stats
   const [jobs, setJobs] = useState([]);
   const [jobsLoading, setJobsLoading] = useState(true);
+  const [jobStats, setJobStats] = useState({
+    totalJobs: 0,
+    activeListings: 0,
+    inactiveListings: 0,
+    totalApplications: 0,
+  });
 
-  // Fetch jobs from MongoDB backend API
-  const fetchJobs = async () => {
+  // Search, Filters & Pagination State
+  const [jobSearchInput, setJobSearchInput] = useState('');
+  const [jobSearchQuery, setJobSearchQuery] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [jobPage, setJobPage] = useState(1);
+  const [jobPagination, setJobPagination] = useState({
+    page: 1,
+    limit: 10,
+    totalResults: 0,
+    totalPages: 1,
+  });
+
+  // Checkbox Selection State
+  const [selectedJobIds, setSelectedJobIds] = useState([]);
+
+  // Add / Edit Modal State
+  const defaultJobForm = {
+    title: '',
+    reference: '',
+    department: 'Technology & Digital',
+    type: 'Full-Time',
+    workplaceType: 'Hybrid',
+    location: '',
+    specialism: '',
+    focus: '',
+    industry: '',
+    salary: '',
+    experienceLevel: '',
+    consultant: 'Richard Meneses',
+    contactEmail: 'admin@r4m.com',
+    description: '',
+    responsibilities: '',
+    requirements: '',
+    benefits: '',
+    otherInformation: '',
+    status: 'active',
+  };
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState(null);
+  const [jobForm, setJobForm] = useState(defaultJobForm);
+  const [initialJobForm, setInitialJobForm] = useState(defaultJobForm);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSavingJob, setIsSavingJob] = useState(false);
+  const [showUnsavedConfirm, setShowUnsavedConfirm] = useState(false);
+
+  // View Modal State (Read-only)
+  const [viewingJob, setViewingJob] = useState(null);
+
+  // Applicants Modal State
+  const [applicantsJob, setApplicantsJob] = useState(null);
+  const [applicantsList, setApplicantsList] = useState([]);
+  const [applicantsLoading, setApplicantsLoading] = useState(false);
+
+  // Delete Confirm Modal State
+  const [deletingJob, setDeletingJob] = useState(null);
+  const [deletingBulk, setDeletingBulk] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Debounce search input (300ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setJobSearchQuery(jobSearchInput);
+      setJobPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [jobSearchInput]);
+
+  // Fetch admin jobs from MongoDB backend API
+  const fetchAdminJobs = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/jobs`);
+      setJobsLoading(true);
+      const params = new URLSearchParams({
+        admin: 'true',
+        page: jobPage,
+        limit: 10,
+      });
+
+      if (jobSearchQuery.trim()) {
+        params.append('search', jobSearchQuery.trim());
+      }
+      if (selectedDepartment && selectedDepartment !== 'All Departments') {
+        params.append('department', selectedDepartment);
+      }
+      if (selectedStatus && selectedStatus !== 'All Status') {
+        params.append('status', selectedStatus.toLowerCase());
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/jobs?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        if (Array.isArray(data)) {
-          setJobs(data);
+        if (data && Array.isArray(data.jobs)) {
+          setJobs(data.jobs);
+          if (data.stats) {
+            setJobStats(data.stats);
+          }
+          if (data.pagination) {
+            setJobPagination(data.pagination);
+          }
         }
       }
     } catch (err) {
-      console.error('Failed to fetch jobs from database:', err);
+      console.error('Failed to fetch admin jobs:', err);
     } finally {
       setJobsLoading(false);
     }
   };
 
+  // Initial load
   useEffect(() => {
     fetchProfile();
-    fetchJobs();
+    fetchArticles();
   }, []);
 
-  // Edit State
-  const [editingJobId, setEditingJobId] = useState(null);
-  const [editingArticleId, setEditingArticleId] = useState(null);
+  // Fetch jobs whenever search query, filters, or page change
+  useEffect(() => {
+    fetchAdminJobs();
+  }, [jobSearchQuery, selectedDepartment, selectedStatus, jobPage]);
 
-  // New Job Form State
-  const [newJob, setNewJob] = useState({
-    title: '',
-    department: 'Logistics & Supply Chain',
-    location: '',
-    type: 'Full-Time',
-    description: '',
-    requirements: '',
-  });
+  // Lock page scroll while any modal is open
+  useEffect(() => {
+    const isAnyModalOpen = Boolean(
+      isJobModalOpen ||
+      viewingJob ||
+      applicantsJob ||
+      deletingJob ||
+      deletingBulk ||
+      showUnsavedConfirm
+    );
+
+    if (isAnyModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isJobModalOpen, viewingJob, applicantsJob, deletingJob, deletingBulk, showUnsavedConfirm]);
+
+  // Escape key listener for closing modals
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showUnsavedConfirm) {
+          setShowUnsavedConfirm(false);
+        } else if (isJobModalOpen) {
+          handleRequestCloseJobModal();
+        } else if (viewingJob) {
+          setViewingJob(null);
+        } else if (applicantsJob) {
+          setApplicantsJob(null);
+        } else if (deletingJob) {
+          setDeletingJob(null);
+        } else if (deletingBulk) {
+          setDeletingBulk(false);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [
+    isJobModalOpen,
+    showUnsavedConfirm,
+    viewingJob,
+    applicantsJob,
+    deletingJob,
+    deletingBulk,
+    jobForm,
+    initialJobForm,
+  ]);
+
+  // Detect unsaved changes in Add/Edit modal
+  const isFormDirty = () => {
+    return JSON.stringify(jobForm) !== JSON.stringify(initialJobForm);
+  };
+
+  const handleRequestCloseJobModal = () => {
+    if (isFormDirty()) {
+      setShowUnsavedConfirm(true);
+    } else {
+      closeJobModal();
+    }
+  };
+
+  const closeJobModal = () => {
+    setIsJobModalOpen(false);
+    setEditingJob(null);
+    setJobForm(defaultJobForm);
+    setInitialJobForm(defaultJobForm);
+    setFormErrors({});
+    setShowUnsavedConfirm(false);
+  };
+
+  // Open Add Modal
+  const handleOpenAddModal = () => {
+    setEditingJob(null);
+    setJobForm(defaultJobForm);
+    setInitialJobForm(defaultJobForm);
+    setFormErrors({});
+    setIsJobModalOpen(true);
+  };
+
+  // Open Edit Modal
+  const handleOpenEditModal = (job) => {
+    const toRichEditorList = (val) => {
+      if (!val) return '';
+      if (Array.isArray(val)) {
+        return '<ul>' + val.map((s) => `<li>${s}</li>`).join('') + '</ul>';
+      }
+      if (typeof val === 'string') {
+        if (val.includes('<li') || val.includes('<p')) return val;
+        const lines = val
+          .split('\n')
+          .map((s) => s.replace(/^[•\-\*]\s*/, '').trim())
+          .filter(Boolean);
+        if (lines.length > 1) {
+          return '<ul>' + lines.map((s) => `<li>${s}</li>`).join('') + '</ul>';
+        }
+        return val;
+      }
+      return String(val);
+    };
+
+    const initialData = {
+      title: job.title || '',
+      reference: job.reference || '',
+      department: job.department || job.category || 'Technology & Digital',
+      type: job.type || 'Full-Time',
+      workplaceType: job.workplaceType || 'Hybrid',
+      location: job.location || '',
+      specialism: job.specialism || '',
+      focus: job.focus || '',
+      industry: job.industry || job.department || '',
+      salary: job.salary || '',
+      experienceLevel: job.experienceLevel || '',
+      consultant: job.consultant || 'Richard Meneses',
+      contactEmail: job.contactEmail || 'admin@r4m.com',
+      description: job.desc || job.aboutRole || '',
+      responsibilities: toRichEditorList(job.responsibilities),
+      requirements: toRichEditorList(job.requirements || job.whoYouAre),
+      benefits: toRichEditorList(job.benefits),
+      otherInformation: job.otherInformation || '',
+      status: (job.status || 'active').toLowerCase(),
+    };
+    setEditingJob(job);
+    setJobForm(initialData);
+    setInitialJobForm(initialData);
+    setFormErrors({});
+    setIsJobModalOpen(true);
+  };
+
+  // Form Validation
+  const validateJobForm = () => {
+    const errs = {};
+    if (!jobForm.title.trim()) errs.title = 'Job title is required';
+    if (!jobForm.department.trim()) errs.department = 'Department is required';
+    if (!jobForm.type.trim()) errs.type = 'Job type is required';
+    if (!jobForm.location.trim()) errs.location = 'Location is required';
+
+    const cleanDesc = (jobForm.description || '').replace(/<[^>]*>/g, '').trim();
+    if (!cleanDesc) errs.description = 'Job description is required';
+
+    const cleanReqs = (jobForm.requirements || '').replace(/<[^>]*>/g, '').trim();
+    if (!cleanReqs) errs.requirements = 'Requirements are required';
+
+    if (!jobForm.status) errs.status = 'Status is required';
+
+    setFormErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  // Save Job Submit (POST or PUT to MongoDB API)
+  const handleSaveJob = async (e) => {
+    if (e) e.preventDefault();
+    if (!validateJobForm()) return;
+
+    setIsSavingJob(true);
+    try {
+      const isEdit = Boolean(editingJob);
+      const url = isEdit
+        ? `${API_BASE_URL}/api/jobs/${editingJob.id || editingJob._id}`
+        : `${API_BASE_URL}/api/jobs`;
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: getAuthHeaders(),
+        body: JSON.stringify(jobForm),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast(
+          isEdit ? 'Job posting updated successfully!' : 'Job posting published successfully!',
+          'success'
+        );
+        closeJobModal();
+        await fetchAdminJobs();
+      } else {
+        showToast(data.message || 'Failed to save job posting.', 'error');
+      }
+    } catch (err) {
+      console.error('Error saving job:', err);
+      showToast('Error saving job posting. Please try again.', 'error');
+    } finally {
+      setIsSavingJob(false);
+    }
+  };
+
+  // Toggle Status directly by clicking status badge
+  const handleToggleStatus = async (job) => {
+    const currentStatus = (job.status || 'active').toLowerCase();
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${job.id || job._id}/status`, {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(
+          `Job listing set to ${newStatus === 'active' ? 'Active' : 'Inactive'}`,
+          'success'
+        );
+        await fetchAdminJobs();
+      } else {
+        showToast(data.message || 'Failed to update status', 'error');
+      }
+    } catch (err) {
+      console.error('Error updating status:', err);
+      showToast('Error updating status', 'error');
+    }
+  };
+
+  // Open candidate applications list
+  const handleOpenApplicants = async (job) => {
+    setApplicantsJob(job);
+    setApplicantsLoading(true);
+    setApplicantsList([]);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${job.id || job._id}/applications`);
+      if (res.ok) {
+        const data = await res.json();
+        setApplicantsList(Array.isArray(data) ? data : []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch applicants:', err);
+      showToast('Failed to load candidate applications', 'error');
+    } finally {
+      setApplicantsLoading(false);
+    }
+  };
+
+  // Delete Job Handler
+  const handleConfirmDelete = async () => {
+    if (!deletingJob) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${deletingJob.id || deletingJob._id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
+      if (res.ok) {
+        showToast('Job posting deleted successfully', 'success');
+        setSelectedJobIds((prev) =>
+          prev.filter((id) => id !== (deletingJob.id || deletingJob._id))
+        );
+        setDeletingJob(null);
+        await fetchAdminJobs();
+      } else {
+        showToast('Failed to delete job posting', 'error');
+      }
+    } catch (err) {
+      console.error('Error deleting job:', err);
+      showToast('Error deleting job', 'error');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Checkbox Selection & Bulk Actions
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedJobIds(jobs.map((j) => j.id || j._id));
+    } else {
+      setSelectedJobIds([]);
+    }
+  };
+
+  const handleToggleSelectJob = (id) => {
+    setSelectedJobIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkAction = async (action) => {
+    if (selectedJobIds.length === 0) return;
+    if (action === 'delete') {
+      setDeletingBulk(true);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/bulk`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ action, ids: selectedJobIds }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message || 'Bulk status updated', 'success');
+        setSelectedJobIds([]);
+        await fetchAdminJobs();
+      } else {
+        showToast(data.message || 'Failed to update selected jobs', 'error');
+      }
+    } catch (err) {
+      console.error('Error performing bulk action:', err);
+      showToast('Error executing bulk action', 'error');
+    }
+  };
+
+  const handleConfirmBulkDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/bulk`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ action: 'delete', ids: selectedJobIds }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message || 'Selected jobs deleted', 'success');
+        setSelectedJobIds([]);
+        setDeletingBulk(false);
+        await fetchAdminJobs();
+      } else {
+        showToast(data.message || 'Failed to delete selected jobs', 'error');
+      }
+    } catch (err) {
+      console.error('Error deleting selected jobs:', err);
+      showToast('Error deleting selected jobs', 'error');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Clear filters
+  const handleClearFilters = () => {
+    setJobSearchInput('');
+    setJobSearchQuery('');
+    setSelectedDepartment('');
+    setSelectedStatus('');
+    setJobPage(1);
+  };
+
+  // Logout Handler
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    navigate('/admin/login');
+  };
 
   // Articles / Insights State
+  const [editingArticleId, setEditingArticleId] = useState(null);
   const [articles, setArticles] = useState([]);
   const [articlesLoading, setArticlesLoading] = useState(true);
+  const [articleSuccessMsg, setArticleSuccessMsg] = useState('');
+  const [newArticle, setNewArticle] = useState({
+    title: '',
+    category: 'Industry Trends',
+    author: 'Admin R4M',
+    coverImage: '',
+    subtitle: '',
+    content: '',
+  });
 
   // Fetch articles from MongoDB backend API
   const fetchArticles = async () => {
     try {
+      setArticlesLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/articles`);
       if (res.ok) {
         const data = await res.json();
@@ -104,119 +569,6 @@ export default function AdminDashboardPage() {
       console.error('Failed to fetch articles from database:', err);
     } finally {
       setArticlesLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJobs();
-    fetchArticles();
-  }, []);
-
-  // New Article Form State
-  const [newArticle, setNewArticle] = useState({
-    title: '',
-    category: 'Industry Trends',
-    author: 'Admin R4M',
-    coverImage: '',
-    subtitle: '',
-    content: '',
-  });
-
-  const [jobSuccessMsg, setJobSuccessMsg] = useState('');
-  const [articleSuccessMsg, setArticleSuccessMsg] = useState('');
-
-  // Logout Handler
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminUser');
-    navigate('/admin/login');
-  };
-
-  // Start Editing a Job
-  const startEditJob = (job) => {
-    setEditingJobId(job.id || job._id);
-    setNewJob({
-      title: job.title || '',
-      department: job.department || job.category || 'Logistics & Supply Chain',
-      location: job.location || '',
-      type: job.type || 'Full-Time',
-      description: job.desc || job.aboutRole || '',
-      requirements: Array.isArray(job.whoYouAre) ? job.whoYouAre.join('\n') : (job.whoYouAre || ''),
-    });
-    window.scrollTo({ top: 180, behavior: 'smooth' });
-  };
-
-  // Cancel Editing Job
-  const cancelEditJob = () => {
-    setEditingJobId(null);
-    setNewJob({
-      title: '',
-      department: 'Logistics & Supply Chain',
-      location: '',
-      type: 'Full-Time',
-      description: '',
-      requirements: '',
-    });
-  };
-
-  // Handle Add / Update Job Submit (POST or PUT to MongoDB API)
-  const handleAddJob = async (e) => {
-    e.preventDefault();
-    if (!newJob.title || !newJob.location) return;
-
-    try {
-      const isEdit = Boolean(editingJobId);
-      const url = isEdit
-        ? `${API_BASE_URL}/api/jobs/${editingJobId}`
-        : `${API_BASE_URL}/api/jobs`;
-      const method = isEdit ? 'PUT' : 'POST';
-
-      const parsedReqs = newJob.requirements
-        ? newJob.requirements.split('\n').map((s) => s.trim()).filter(Boolean)
-        : [];
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: newJob.title,
-          department: newJob.department,
-          category: newJob.department,
-          location: newJob.location,
-          type: newJob.type,
-          desc: newJob.description,
-          aboutRole: newJob.description,
-          requirements: parsedReqs,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setJobSuccessMsg(isEdit ? 'Job posting updated successfully!' : 'Job posting created and saved to database successfully!');
-        await fetchJobs();
-      } else {
-        await fetchJobs();
-        setJobSuccessMsg(isEdit ? 'Job posting updated successfully!' : 'Job posting created successfully!');
-      }
-    } catch (err) {
-      console.error('Error updating job:', err);
-      await fetchJobs();
-      setJobSuccessMsg('Job action saved successfully!');
-    } finally {
-      cancelEditJob();
-      setTimeout(() => setJobSuccessMsg(''), 4000);
-    }
-  };
-
-  // Handle Delete Job (DELETE from MongoDB API)
-  const handleDeleteJob = async (id) => {
-    try {
-      await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
-        method: 'DELETE',
-      });
-      setJobs(jobs.filter((j) => (j.id || j._id) !== id));
-    } catch (err) {
-      setJobs(jobs.filter((j) => (j.id || j._id) !== id));
     }
   };
 
@@ -405,7 +757,18 @@ export default function AdminDashboardPage() {
             }}
           >
             <i className="bi bi-briefcase-fill"></i>
-            <span>Add Jobs</span>
+            <span>Job Postings</span>
+          </button>
+
+          <button
+            className={`r4m-admin-nav-item ${activeTab === 'applications' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab('jobs');
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            <i className="bi bi-people-fill"></i>
+            <span>Applications</span>
           </button>
 
           <button
@@ -416,7 +779,7 @@ export default function AdminDashboardPage() {
             }}
           >
             <i className="bi bi-journal-text"></i>
-            <span>Add Insights / Articles</span>
+            <span>Article / Insights</span>
           </button>
 
           <button
@@ -641,157 +1004,359 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          {/* ==================== 2. ADD JOBS TAB ==================== */}
+          {/* ==================== 2. JOB POSTINGS TAB (EXACT MATCH TO DESIGN SCREENSHOT) ==================== */}
           {activeTab === 'jobs' && (
             <div className="r4m-tab-content">
-              <div className="r4m-tab-header">
-                <h2>Manage & Add Job Listings</h2>
-                <p>Post new career opportunities or manage existing listings across departments.</p>
+              {/* Header Row: Title & Subtitle on left, + Add Job Posting on right */}
+              <div className="r4m-jobs-header-row">
+                <div>
+                  <h1 className="r4m-jobs-header-title">Job Postings</h1>
+                  <p className="r4m-jobs-header-sub">
+                    Manage all job listings, track applications, and control visibility on the website.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="r4m-add-job-btn"
+                  onClick={handleOpenAddModal}
+                >
+                  <i className="bi bi-plus-lg"></i>
+                  <span>Add Job Posting</span>
+                </button>
               </div>
 
-              {jobSuccessMsg && (
-                <div className="r4m-alert r4m-alert--success">
-                  <i className="bi bi-check-circle-fill"></i> {jobSuccessMsg}
+              {/* 4 Stat Cards Row */}
+              <div className="r4m-jobs-stats-row">
+                {/* Total Job Postings */}
+                <div className="r4m-job-stat-card">
+                  <div className="r4m-job-stat-icon r4m-job-stat-icon--orange">
+                    <i className="bi bi-briefcase-fill"></i>
+                  </div>
+                  <div className="r4m-job-stat-info">
+                    <span className="r4m-job-stat-num">{jobStats.totalJobs}</span>
+                    <span className="r4m-job-stat-label">Total Job Postings</span>
+                  </div>
+                </div>
+
+                {/* Active Listings */}
+                <div className="r4m-job-stat-card">
+                  <div className="r4m-job-stat-icon r4m-job-stat-icon--green">
+                    <i className="bi bi-check-circle-fill"></i>
+                  </div>
+                  <div className="r4m-job-stat-info">
+                    <span className="r4m-job-stat-num">{jobStats.activeListings}</span>
+                    <span className="r4m-job-stat-label">Active Listings</span>
+                  </div>
+                </div>
+
+                {/* Inactive Listings */}
+                <div className="r4m-job-stat-card">
+                  <div className="r4m-job-stat-icon r4m-job-stat-icon--red">
+                    <i className="bi bi-eye-slash-fill"></i>
+                  </div>
+                  <div className="r4m-job-stat-info">
+                    <span className="r4m-job-stat-num">{jobStats.inactiveListings}</span>
+                    <span className="r4m-job-stat-label">Inactive Listings</span>
+                  </div>
+                </div>
+
+                {/* Total Applications */}
+                <div className="r4m-job-stat-card">
+                  <div className="r4m-job-stat-icon r4m-job-stat-icon--blue">
+                    <i className="bi bi-people-fill"></i>
+                  </div>
+                  <div className="r4m-job-stat-info">
+                    <span className="r4m-job-stat-num">{jobStats.totalApplications}</span>
+                    <span className="r4m-job-stat-label">Total Applications</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Search and Filters Toolbar Card */}
+              <div className="r4m-jobs-toolbar">
+                <div className="r4m-jobs-search-wrap">
+                  <i className="bi bi-search r4m-jobs-search-icon"></i>
+                  <input
+                    type="text"
+                    className="r4m-jobs-search-input"
+                    placeholder="Search job title, department, or location..."
+                    value={jobSearchInput}
+                    onChange={(e) => setJobSearchInput(e.target.value)}
+                  />
+                </div>
+
+                <select
+                  className="r4m-jobs-filter-select"
+                  value={selectedDepartment}
+                  onChange={(e) => {
+                    setSelectedDepartment(e.target.value);
+                    setJobPage(1);
+                  }}
+                >
+                  <option value="">All Departments</option>
+                  <option value="Technology & Digital">Technology & Digital</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail & FMCG">Retail & FMCG</option>
+                  <option value="Logistics & Supply Chain">Logistics & Supply Chain</option>
+                  <option value="Hospitality, Food & Beverage">Hospitality, Food & Beverage</option>
+                  <option value="Construction & Engineering">Construction & Engineering</option>
+                  <option value="E-Commerce">E-Commerce</option>
+                  <option value="Financial Services & FinTech">Financial Services & FinTech</option>
+                </select>
+
+                <select
+                  className="r4m-jobs-filter-select"
+                  value={selectedStatus}
+                  onChange={(e) => {
+                    setSelectedStatus(e.target.value);
+                    setJobPage(1);
+                  }}
+                >
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+
+                <button
+                  type="button"
+                  className="r4m-jobs-clear-btn"
+                  onClick={handleClearFilters}
+                >
+                  Clear
+                </button>
+              </div>
+
+              {/* Bulk Actions Toolbar Bar */}
+              {selectedJobIds.length > 0 && (
+                <div className="r4m-jobs-bulk-bar">
+                  <div className="r4m-bulk-left">
+                    <span className="r4m-bulk-badge">{selectedJobIds.length}</span>
+                    <span>job(s) selected</span>
+                  </div>
+                  <div className="r4m-bulk-actions">
+                    <button
+                      type="button"
+                      className="r4m-bulk-btn"
+                      onClick={() => handleBulkAction('activate')}
+                    >
+                      <i className="bi bi-check-circle"></i> Set Active
+                    </button>
+                    <button
+                      type="button"
+                      className="r4m-bulk-btn"
+                      onClick={() => handleBulkAction('deactivate')}
+                    >
+                      <i className="bi bi-eye-slash"></i> Set Inactive
+                    </button>
+                    <button
+                      type="button"
+                      className="r4m-bulk-btn r4m-bulk-btn--danger"
+                      onClick={() => handleBulkAction('delete')}
+                    >
+                      <i className="bi bi-trash"></i> Delete Selected
+                    </button>
+                    <button
+                      type="button"
+                      className="r4m-bulk-btn"
+                      onClick={() => setSelectedJobIds([])}
+                    >
+                      Deselect
+                    </button>
+                  </div>
                 </div>
               )}
 
-              {/* Add / Edit Job Form Panel */}
-              <div className="r4m-admin-form-card">
-                <h3 className="r4m-admin-form-card__title">
-                  <i className={editingJobId ? "bi bi-pencil-square" : "bi bi-plus-circle-fill"}></i>{" "}
-                  {editingJobId ? 'Edit Job Posting' : 'Post a New Job Opportunity'}
-                </h3>
-                <form onSubmit={handleAddJob} className="r4m-grid-form">
-                  <div className="r4m-form-group span-2">
-                    <label>Job Title *</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Warehouse & Logistics Operations Manager"
-                      value={newJob.title}
-                      onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="r4m-form-group">
-                    <label>Department / Industry *</label>
-                    <select
-                      value={newJob.department}
-                      onChange={(e) => setNewJob({ ...newJob, department: e.target.value })}
-                    >
-                      <option value="Logistics & Supply Chain">Logistics & Supply Chain</option>
-                      <option value="Manufacturing">Manufacturing</option>
-                      <option value="Retail & FMCG">Retail & FMCG</option>
-                      <option value="Hospitality, Food & Beverage">Hospitality, Food & Beverage</option>
-                      <option value="Construction & Engineering">Construction & Engineering</option>
-                      <option value="E-Commerce">E-Commerce</option>
-                      <option value="Financial Services & FinTech">Financial Services & FinTech</option>
-                      <option value="Technology & Digital">Technology & Digital</option>
-                    </select>
-                  </div>
-
-                  <div className="r4m-form-group">
-                    <label>Job Type *</label>
-                    <select
-                      value={newJob.type}
-                      onChange={(e) => setNewJob({ ...newJob, type: e.target.value })}
-                    >
-                      <option value="Full-Time">Full-Time</option>
-                      <option value="Part-Time">Part-Time</option>
-                      <option value="Contract">Contract</option>
-                      <option value="Project-Based">Project-Based</option>
-                    </select>
-                  </div>
-
-                  <div className="r4m-form-group span-2">
-                    <label>Location *</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Quezon City, Metro Manila"
-                      value={newJob.location}
-                      onChange={(e) => setNewJob({ ...newJob, location: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="r4m-form-group span-2">
-                    <label>Job Description</label>
-                    <textarea
-                      rows="4"
-                      placeholder="Enter detailed job overview and responsibilities..."
-                      value={newJob.description}
-                      onChange={(e) => setNewJob({ ...newJob, description: e.target.value })}
-                    ></textarea>
-                  </div>
-
-                  <div className="r4m-form-group span-2">
-                    <label>Requirements</label>
-                    <textarea
-                      rows="3"
-                      placeholder="Enter candidate qualifications, skills, and certifications..."
-                      value={newJob.requirements}
-                      onChange={(e) => setNewJob({ ...newJob, requirements: e.target.value })}
-                    ></textarea>
-                  </div>
-
-                  <div className="r4m-form-actions span-2" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <button type="submit" className="r4m-primary-btn">
-                      {editingJobId ? 'Update Job Posting' : 'Publish Job Posting'}
-                    </button>
-                    {editingJobId && (
-                      <button type="button" className="r4m-secondary-btn" onClick={cancelEditJob}>
-                        Cancel Edit
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </div>
-
-              {/* Jobs Table List */}
-              <div className="r4m-admin-card-panel" style={{ marginTop: '32px' }}>
-                <div className="r4m-admin-card-panel__header">
-                  <h3>Existing Job Postings ({jobs.length})</h3>
-                </div>
-                <div className="r4m-admin-table-wrapper">
-                  <table className="r4m-admin-table">
+              {/* Jobs Table Card */}
+              <div className="r4m-jobs-table-card">
+                <div style={{ overflowX: 'auto' }}>
+                  <table className="r4m-jobs-table">
                     <thead>
                       <tr>
-                        <th>Title</th>
+                        <th className="r4m-td-check">
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll}
+                            checked={jobs.length > 0 && selectedJobIds.length === jobs.length}
+                            aria-label="Select all jobs on page"
+                          />
+                        </th>
+                        <th>Reference</th>
+                        <th>Job Title</th>
                         <th>Department</th>
                         <th>Type</th>
                         <th>Location</th>
-                        <th>Actions</th>
+                        <th>Applications</th>
+                        <th>Status</th>
+                        <th>Date Posted</th>
+                        <th style={{ textAlign: 'center' }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {jobs.map((j) => (
-                        <tr key={j.id || j._id}>
-                          <td className="r4m-td-title">{j.title}</td>
-                          <td>{j.department || j.category}</td>
-                          <td>
-                            <span className="r4m-tag-pill">{j.type}</span>
-                          </td>
-                          <td>{j.location}</td>
-                          <td className="r4m-actions-cell">
-                            <button
-                              className="r4m-icon-btn r4m-icon-btn--edit"
-                              onClick={() => startEditJob(j)}
-                              title="Edit Job"
-                            >
-                              <i className="bi bi-pencil-square"></i>
-                            </button>
-                            <button
-                              className="r4m-icon-btn r4m-icon-btn--danger"
-                              onClick={() => handleDeleteJob(j.id || j._id)}
-                              title="Delete Job"
-                            >
-                              <i className="bi bi-trash"></i>
-                            </button>
+                      {jobsLoading ? (
+                        <tr>
+                          <td colSpan="10" style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
+                            <div style={{ display: 'inline-block', marginBottom: '8px' }}>
+                              <i className="bi bi-arrow-repeat bi-spin" style={{ fontSize: '24px' }}></i>
+                            </div>
+                            <div>Loading job postings...</div>
                           </td>
                         </tr>
-                      ))}
+                      ) : jobs.length === 0 ? (
+                        <tr>
+                          <td colSpan="10">
+                            <div className="r4m-jobs-table-empty">
+                              <i className="bi bi-inbox"></i>
+                              <h4>No job postings found</h4>
+                              <p>Try adjusting your search query or clear filters.</p>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        jobs.map((j) => {
+                          const jId = j.id || j._id;
+                          const isSelected = selectedJobIds.includes(jId);
+                          const statusLower = (j.status || 'active').toLowerCase();
+                          const typeClass =
+                            j.type === 'Part-Time'
+                              ? 'r4m-type-pill--parttime'
+                              : j.type === 'Contract'
+                              ? 'r4m-type-pill--contract'
+                              : j.type === 'Project-Based'
+                              ? 'r4m-type-pill--project'
+                              : 'r4m-type-pill--fulltime';
+
+                          return (
+                            <tr key={jId} className={isSelected ? 'is-selected' : ''}>
+                              <td className="r4m-td-check">
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={() => handleToggleSelectJob(jId)}
+                                  aria-label={`Select ${j.title}`}
+                                />
+                              </td>
+                              <td className="r4m-td-ref">
+                                <span className="r4m-ref-badge">{j.reference || 'N/A'}</span>
+                              </td>
+                              <td className="r4m-td-job-title">{j.title}</td>
+                              <td className="r4m-td-dept">{j.department || j.category}</td>
+                              <td>
+                                <span className={`r4m-type-pill ${typeClass}`}>{j.type}</span>
+                              </td>
+                              <td>{j.location}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className="r4m-app-count-btn"
+                                  onClick={() => handleOpenApplicants(j)}
+                                  title="View candidate applications"
+                                >
+                                  <i className="bi bi-people-fill"></i>
+                                  <span>{j.applicationsCount || 0}</span>
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className={`r4m-status-toggle-btn ${
+                                    statusLower === 'active'
+                                      ? 'r4m-status-toggle-btn--active'
+                                      : 'r4m-status-toggle-btn--inactive'
+                                  }`}
+                                  onClick={() => handleToggleStatus(j)}
+                                  title="Click to toggle status"
+                                >
+                                  {statusLower === 'active' ? 'Active' : 'Inactive'}
+                                </button>
+                              </td>
+                              <td style={{ whiteSpace: 'nowrap', color: '#64748b' }}>
+                                {j.datePosted || 'Oct 8, 2026'}
+                              </td>
+                              <td>
+                                <div className="r4m-job-actions" style={{ justifyContent: 'center' }}>
+                                  <button
+                                    type="button"
+                                    className="r4m-action-btn r4m-action-btn--view"
+                                    onClick={() => setViewingJob(j)}
+                                    title="View Job Details"
+                                  >
+                                    <i className="bi bi-eye"></i>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="r4m-action-btn r4m-action-btn--edit"
+                                    onClick={() => handleOpenEditModal(j)}
+                                    title="Edit Job Posting"
+                                  >
+                                    <i className="bi bi-pencil"></i>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="r4m-action-btn r4m-action-btn--delete"
+                                    onClick={() => setDeletingJob(j)}
+                                    title="Delete Job"
+                                  >
+                                    <i className="bi bi-trash"></i>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Pagination Row */}
+                <div className="r4m-pagination-row">
+                  <span className="r4m-pagination-info">
+                    Showing{' '}
+                    {jobPagination.totalResults === 0
+                      ? 0
+                      : (jobPagination.page - 1) * jobPagination.limit + 1}{' '}
+                    to{' '}
+                    {Math.min(
+                      jobPagination.page * jobPagination.limit,
+                      jobPagination.totalResults
+                    )}{' '}
+                    of {jobPagination.totalResults} results
+                  </span>
+                  <div className="r4m-pagination-nav">
+                    <button
+                      type="button"
+                      className="r4m-page-btn"
+                      disabled={jobPagination.page <= 1}
+                      onClick={() => setJobPage((p) => Math.max(1, p - 1))}
+                      aria-label="Previous page"
+                    >
+                      <i className="bi bi-chevron-left"></i>
+                    </button>
+                    {Array.from(
+                      { length: jobPagination.totalPages || 1 },
+                      (_, idx) => idx + 1
+                    ).map((pg) => (
+                      <button
+                        key={pg}
+                        type="button"
+                        className={`r4m-page-btn ${jobPagination.page === pg ? 'is-active' : ''}`}
+                        onClick={() => setJobPage(pg)}
+                      >
+                        {pg}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className="r4m-page-btn"
+                      disabled={jobPagination.page >= jobPagination.totalPages}
+                      onClick={() =>
+                        setJobPage((p) => Math.min(jobPagination.totalPages, p + 1))
+                      }
+                      aria-label="Next page"
+                    >
+                      <i className="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1078,6 +1643,790 @@ export default function AdminDashboardPage() {
           )}
         </div>
       </div>
+
+      {/* ==================== 1. ADD / EDIT JOB CENTERED POPUP MODAL ==================== */}
+      {isJobModalOpen && (
+        <div
+          className="r4m-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) handleRequestCloseJobModal();
+          }}
+        >
+          <div className="r4m-modal-dialog">
+            <div className="r4m-modal-header">
+              <div>
+                <h2 className="r4m-modal-title">
+                  {editingJob ? 'Edit Job Posting' : 'Add New Job Posting'}
+                </h2>
+                <p className="r4m-modal-sub">
+                  {editingJob
+                    ? 'Update the job listing details and requirements below.'
+                    : 'Fill in the details below to create a new job listing.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="r4m-modal-close-btn"
+                onClick={handleRequestCloseJobModal}
+                aria-label="Close modal"
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="r4m-modal-body">
+              <form id="jobForm" onSubmit={handleSaveJob} className="r4m-modal-form-grid">
+                {/* Row 1: Job Title & Reference */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">
+                    Job Title <span className="req">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`r4m-form-input ${formErrors.title ? 'has-error' : ''}`}
+                    placeholder="e.g. Retail Store Operations Lead"
+                    value={jobForm.title}
+                    onChange={(e) => setJobForm({ ...jobForm, title: e.target.value })}
+                  />
+                  {formErrors.title && (
+                    <span className="r4m-field-error">{formErrors.title}</span>
+                  )}
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">
+                    Job Reference
+                  </label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. R4M-RET-404 (Auto-generated if empty)"
+                    value={jobForm.reference}
+                    onChange={(e) => setJobForm({ ...jobForm, reference: e.target.value })}
+                  />
+                </div>
+
+                {/* Row 2: Department & Contract / Job Type */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">
+                    Department / Industry <span className="req">*</span>
+                  </label>
+                  <select
+                    className={`r4m-form-select ${formErrors.department ? 'has-error' : ''}`}
+                    value={jobForm.department}
+                    onChange={(e) => setJobForm({ ...jobForm, department: e.target.value })}
+                  >
+                    <option value="Technology & Digital">Technology & Digital</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Retail & FMCG">Retail & FMCG</option>
+                    <option value="Logistics & Supply Chain">Logistics & Supply Chain</option>
+                    <option value="Hospitality, Food & Beverage">Hospitality, Food & Beverage</option>
+                    <option value="Construction & Engineering">Construction & Engineering</option>
+                    <option value="E-Commerce">E-Commerce</option>
+                    <option value="Financial Services & FinTech">Financial Services & FinTech</option>
+                  </select>
+                  {formErrors.department && (
+                    <span className="r4m-field-error">{formErrors.department}</span>
+                  )}
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">
+                    Contract / Job Type <span className="req">*</span>
+                  </label>
+                  <select
+                    className={`r4m-form-select ${formErrors.type ? 'has-error' : ''}`}
+                    value={jobForm.type}
+                    onChange={(e) => setJobForm({ ...jobForm, type: e.target.value })}
+                  >
+                    <option value="Full-Time">Full-Time</option>
+                    <option value="Part-Time">Part-Time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Permanent">Permanent</option>
+                    <option value="Project-Based">Project-Based</option>
+                  </select>
+                  {formErrors.type && (
+                    <span className="r4m-field-error">{formErrors.type}</span>
+                  )}
+                </div>
+
+                {/* Row 3: Workplace Type & Location */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Workplace Type</label>
+                  <select
+                    className="r4m-form-select"
+                    value={jobForm.workplaceType}
+                    onChange={(e) => setJobForm({ ...jobForm, workplaceType: e.target.value })}
+                  >
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="On-Site">On-Site</option>
+                    <option value="Remote">Remote</option>
+                  </select>
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">
+                    Location <span className="req">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`r4m-form-input ${formErrors.location ? 'has-error' : ''}`}
+                    placeholder="e.g. Taguig City, Metro Manila"
+                    value={jobForm.location}
+                    onChange={(e) => setJobForm({ ...jobForm, location: e.target.value })}
+                  />
+                  {formErrors.location && (
+                    <span className="r4m-field-error">{formErrors.location}</span>
+                  )}
+                </div>
+
+                {/* Row 4: Specialism & Focus Area */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Specialism (Optional)</label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. Store Operations"
+                    value={jobForm.specialism}
+                    onChange={(e) => setJobForm({ ...jobForm, specialism: e.target.value })}
+                  />
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Focus Area (Optional)</label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. Retail & FMCG Customer Service"
+                    value={jobForm.focus}
+                    onChange={(e) => setJobForm({ ...jobForm, focus: e.target.value })}
+                  />
+                </div>
+
+                {/* Row 5: Salary & Experience Level */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Salary (Optional)</label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. ₱30,000 - ₱38,000 / month"
+                    value={jobForm.salary}
+                    onChange={(e) => setJobForm({ ...jobForm, salary: e.target.value })}
+                  />
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Experience Level (Optional)</label>
+                  <select
+                    className="r4m-form-select"
+                    value={jobForm.experienceLevel}
+                    onChange={(e) => setJobForm({ ...jobForm, experienceLevel: e.target.value })}
+                  >
+                    <option value="">Select experience level</option>
+                    <option value="Entry Level">Entry Level</option>
+                    <option value="Mid Level">Mid Level</option>
+                    <option value="Senior Level">Senior Level</option>
+                    <option value="Executive">Executive</option>
+                  </select>
+                </div>
+
+                {/* Row 6: Consultant & Contact Email */}
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Consultant / Recruiter</label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. Richard Meneses"
+                    value={jobForm.consultant}
+                    onChange={(e) => setJobForm({ ...jobForm, consultant: e.target.value })}
+                  />
+                </div>
+
+                <div className="r4m-form-field">
+                  <label className="r4m-form-label">Contact / Inquiry Email</label>
+                  <input
+                    type="email"
+                    className="r4m-form-input"
+                    placeholder="e.g. admin@r4m.com"
+                    value={jobForm.contactEmail}
+                    onChange={(e) => setJobForm({ ...jobForm, contactEmail: e.target.value })}
+                  />
+                </div>
+
+                {/* Row 7: About the Role / Description (Rich Text) */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">
+                    About the Role / Job Description <span className="req">*</span>
+                  </label>
+                  <RichTextEditor
+                    value={jobForm.description}
+                    onChange={(content) => setJobForm({ ...jobForm, description: content })}
+                    placeholder="Enter detailed job overview and role objectives..."
+                    minHeight="130px"
+                  />
+                  {formErrors.description && (
+                    <span className="r4m-field-error">{formErrors.description}</span>
+                  )}
+                </div>
+
+                {/* Row 8: Key Responsibilities (Rich Text) */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">Key Responsibilities (Optional)</label>
+                  <RichTextEditor
+                    value={jobForm.responsibilities}
+                    onChange={(content) => setJobForm({ ...jobForm, responsibilities: content })}
+                    placeholder="Enter key deliverables and operational workflows (use bullet button for lists)..."
+                    minHeight="120px"
+                  />
+                </div>
+
+                {/* Row 9: Who You Are / Requirements (Rich Text) */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">
+                    Who You Are / Requirements <span className="req">*</span>
+                  </label>
+                  <RichTextEditor
+                    value={jobForm.requirements}
+                    onChange={(content) => setJobForm({ ...jobForm, requirements: content })}
+                    placeholder="Enter candidate qualifications, skills, and certifications..."
+                    minHeight="120px"
+                  />
+                  {formErrors.requirements && (
+                    <span className="r4m-field-error">{formErrors.requirements}</span>
+                  )}
+                </div>
+
+                {/* Row 10: Benefits (Optional Rich Text) */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">Benefits & Perks (Optional)</label>
+                  <RichTextEditor
+                    value={jobForm.benefits}
+                    onChange={(content) => setJobForm({ ...jobForm, benefits: content })}
+                    placeholder="Enter benefits and perks (e.g. HMO, bonuses, store discounts)..."
+                    minHeight="100px"
+                  />
+                </div>
+
+                {/* Row 11: Other Information */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">Other Information (Optional)</label>
+                  <input
+                    type="text"
+                    className="r4m-form-input"
+                    placeholder="e.g. Additional screening notes, shift schedules..."
+                    value={jobForm.otherInformation}
+                    onChange={(e) => setJobForm({ ...jobForm, otherInformation: e.target.value })}
+                  />
+                </div>
+
+                {/* Row 12: Status */}
+                <div className="r4m-form-field r4m-form-col-full">
+                  <label className="r4m-form-label">
+                    Status <span className="req">*</span>
+                  </label>
+                  <select
+                    className="r4m-form-select"
+                    value={jobForm.status}
+                    onChange={(e) => setJobForm({ ...jobForm, status: e.target.value })}
+                  >
+                    <option value="active">Active (Show on website)</option>
+                    <option value="inactive">Inactive (Hidden from website)</option>
+                  </select>
+                  <span className="r4m-field-helper">
+                    {jobForm.status === 'inactive'
+                      ? 'Inactive listings will be hidden from the public website.'
+                      : 'Active listings are immediately visible and accepting candidate applications.'}
+                  </span>
+                </div>
+              </form>
+            </div>
+
+            <div className="r4m-modal-footer">
+              <button
+                type="button"
+                className="r4m-secondary-btn"
+                onClick={handleRequestCloseJobModal}
+                disabled={isSavingJob}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                form="jobForm"
+                className="r4m-primary-btn r4m-primary-btn--orange"
+                disabled={isSavingJob}
+              >
+                {isSavingJob
+                  ? 'Saving...'
+                  : editingJob
+                  ? 'Save Changes'
+                  : 'Publish Job Posting'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 2. READ-ONLY VIEW JOB MODAL ==================== */}
+      {viewingJob && (
+        <div
+          className="r4m-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setViewingJob(null);
+          }}
+        >
+          <div className="r4m-modal-dialog r4m-modal-dialog--lg">
+            <div className="r4m-modal-header">
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                  <span
+                    className={`r4m-status-toggle-btn ${(viewingJob.status || 'active').toLowerCase() === 'active' ? 'r4m-status-toggle-btn--active' : 'r4m-status-toggle-btn--inactive'}`}
+                    style={{ cursor: 'default' }}
+                  >
+                    {(viewingJob.status || 'active').toLowerCase() === 'active' ? 'Active' : 'Inactive'}
+                  </span>
+                  <span className="r4m-ref-badge" style={{ fontSize: '13px' }}>
+                    {viewingJob.reference || 'N/A'}
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#64748b' }}>
+                    Posted on {viewingJob.datePosted || 'Oct 8, 2026'}
+                  </span>
+                </div>
+                <h2 className="r4m-modal-title">{viewingJob.title}</h2>
+                <p className="r4m-modal-sub">{viewingJob.department || viewingJob.category}</p>
+              </div>
+              <button
+                type="button"
+                className="r4m-modal-close-btn"
+                onClick={() => setViewingJob(null)}
+                aria-label="Close modal"
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="r4m-modal-body">
+              <div className="r4m-view-meta-grid">
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Job Reference</span>
+                  <span className="r4m-view-meta-val">
+                    <span className="r4m-ref-badge">{viewingJob.reference || 'N/A'}</span>
+                  </span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Location</span>
+                  <span className="r4m-view-meta-val">{viewingJob.location}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Contract Type</span>
+                  <span className="r4m-view-meta-val">{viewingJob.type}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Workplace Type</span>
+                  <span className="r4m-view-meta-val">{viewingJob.workplaceType || 'Hybrid'}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Specialism</span>
+                  <span className="r4m-view-meta-val">{viewingJob.specialism || 'General'}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Focus Area</span>
+                  <span className="r4m-view-meta-val">{viewingJob.focus || 'General'}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Salary</span>
+                  <span className="r4m-view-meta-val">
+                    {viewingJob.salary || 'Negotiable / Competitive'}
+                  </span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Experience Level</span>
+                  <span className="r4m-view-meta-val">
+                    {viewingJob.experienceLevel || 'Not Specified'}
+                  </span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Consultant</span>
+                  <span className="r4m-view-meta-val">{viewingJob.consultant || 'Richard Meneses'}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Contact Email</span>
+                  <span className="r4m-view-meta-val">{viewingJob.contactEmail || 'admin@r4m.com'}</span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Applications</span>
+                  <span className="r4m-view-meta-val">
+                    👥 {viewingJob.applicationsCount || 0} applied
+                  </span>
+                </div>
+                <div className="r4m-view-meta-item">
+                  <span className="r4m-view-meta-label">Status</span>
+                  <span className="r4m-view-meta-val" style={{ textTransform: 'capitalize' }}>
+                    {viewingJob.status || 'active'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="r4m-view-sec">
+                <h4 className="r4m-view-sec-title">About the Role / Description</h4>
+                <div
+                  className="r4m-view-sec-content"
+                  dangerouslySetInnerHTML={{
+                    __html: viewingJob.desc || viewingJob.aboutRole || 'No description provided.',
+                  }}
+                />
+              </div>
+
+              {viewingJob.responsibilities && (
+                <div className="r4m-view-sec">
+                  <h4 className="r4m-view-sec-title">Key Responsibilities</h4>
+                  {Array.isArray(viewingJob.responsibilities) ? (
+                    <ul style={{ margin: '0', paddingLeft: '20px', color: '#334155', lineHeight: '1.6' }}>
+                      {viewingJob.responsibilities.map((r, idx) => (
+                        <li key={idx}>{r}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div
+                      className="r4m-view-sec-content"
+                      dangerouslySetInnerHTML={{ __html: viewingJob.responsibilities }}
+                    />
+                  )}
+                </div>
+              )}
+
+              <div className="r4m-view-sec">
+                <h4 className="r4m-view-sec-title">Who You Are / Requirements</h4>
+                <div
+                  className="r4m-view-sec-content"
+                  dangerouslySetInnerHTML={{
+                    __html: viewingJob.requirements || viewingJob.whoYouAre || 'No specific requirements.',
+                  }}
+                />
+              </div>
+
+              {viewingJob.benefits && (
+                <div className="r4m-view-sec">
+                  <h4 className="r4m-view-sec-title">Benefits & Perks</h4>
+                  <div
+                    className="r4m-view-sec-content"
+                    dangerouslySetInnerHTML={{ __html: viewingJob.benefits }}
+                  />
+                </div>
+              )}
+
+              {viewingJob.otherInformation && (
+                <div className="r4m-view-sec">
+                  <h4 className="r4m-view-sec-title">Other Information</h4>
+                  <div className="r4m-view-sec-content">
+                    {viewingJob.otherInformation}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="r4m-modal-footer">
+              <button
+                type="button"
+                className="r4m-secondary-btn"
+                onClick={() => setViewingJob(null)}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="r4m-primary-btn r4m-primary-btn--orange"
+                onClick={() => {
+                  const j = viewingJob;
+                  setViewingJob(null);
+                  handleOpenEditModal(j);
+                }}
+              >
+                <i className="bi bi-pencil"></i> Edit Job
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 3. APPLICANTS LIST MODAL ==================== */}
+      {applicantsJob && (
+        <div
+          className="r4m-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setApplicantsJob(null);
+          }}
+        >
+          <div className="r4m-modal-dialog r4m-modal-dialog--lg">
+            <div className="r4m-modal-header">
+              <div>
+                <h2 className="r4m-modal-title">Candidates for {applicantsJob.title}</h2>
+                <p className="r4m-modal-sub">
+                  {applicantsList.length} applicant(s) for this position
+                </p>
+              </div>
+              <button
+                type="button"
+                className="r4m-modal-close-btn"
+                onClick={() => setApplicantsJob(null)}
+                aria-label="Close modal"
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="r4m-modal-body">
+              {applicantsLoading ? (
+                <div style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
+                  <i className="bi bi-arrow-repeat bi-spin" style={{ fontSize: '24px', display: 'block', marginBottom: '8px' }}></i>
+                  <p>Loading candidate applications...</p>
+                </div>
+              ) : applicantsList.length === 0 ? (
+                <div className="r4m-jobs-table-empty">
+                  <i className="bi bi-person-x"></i>
+                  <h4>No applications yet</h4>
+                  <p>No candidates have applied for this position so far.</p>
+                </div>
+              ) : (
+                <div className="r4m-applicants-table-wrap">
+                  <table className="r4m-applicants-table">
+                    <thead>
+                      <tr>
+                        <th>Candidate</th>
+                        <th>Contact Info</th>
+                        <th>Resume Link</th>
+                        <th>Message / Notes</th>
+                        <th>Date Applied</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {applicantsList.map((app) => (
+                        <tr key={app.id || app._id}>
+                          <td>
+                            <div className="r4m-app-candidate-name">{app.name}</div>
+                            <span
+                              className="r4m-type-pill r4m-type-pill--fulltime"
+                              style={{ fontSize: '11px', padding: '2px 8px' }}
+                            >
+                              {app.status || 'New'}
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ fontWeight: 600, color: '#0f172a' }}>{app.email}</div>
+                            <div style={{ fontSize: '12px', color: '#64748b' }}>{app.phone}</div>
+                          </td>
+                          <td>
+                            {app.resume ? (
+                              <a
+                                href={app.resume}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="r4m-app-link-btn"
+                              >
+                                <i className="bi bi-box-arrow-up-right"></i> Open Resume
+                              </a>
+                            ) : (
+                              <span style={{ color: '#94a3b8' }}>None</span>
+                            )}
+                          </td>
+                          <td style={{ maxWidth: '240px' }}>
+                            <p style={{ margin: 0, fontSize: '12.5px', color: '#475569', lineHeight: 1.4 }}>
+                              {app.message || <em style={{ color: '#94a3b8' }}>No cover note</em>}
+                            </p>
+                          </td>
+                          <td style={{ fontSize: '12px', color: '#64748b', whiteSpace: 'nowrap' }}>
+                            {app.dateApplied || 'Recently'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div className="r4m-modal-footer">
+              <button
+                type="button"
+                className="r4m-secondary-btn"
+                onClick={() => setApplicantsJob(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 4. DELETE CONFIRM MODAL (WITH APPLICANTS CHECK) ==================== */}
+      {deletingJob && (
+        <div
+          className="r4m-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !isDeleting) setDeletingJob(null);
+          }}
+        >
+          <div className="r4m-modal-dialog r4m-modal-dialog--sm">
+            <div className="r4m-modal-body" style={{ padding: '28px 24px 20px' }}>
+              <div className="r4m-confirm-icon-box">
+                <i className="bi bi-trash-fill"></i>
+              </div>
+              <h3 className="r4m-confirm-title">Delete Job Posting</h3>
+
+              {deletingJob.applicationsCount > 0 ? (
+                <div>
+                  <div className="r4m-warn-box">
+                    ⚠️ <strong>Notice:</strong> This job has{' '}
+                    <strong>{deletingJob.applicationsCount} candidate application(s)</strong> attached to it.
+                    Deleting this job may remove candidate records. We strongly suggest setting the job to{' '}
+                    <strong>Inactive</strong> instead.
+                  </div>
+                  <p className="r4m-confirm-desc">
+                    Are you sure you want to permanently delete <strong>{deletingJob.title}</strong>?
+                  </p>
+                </div>
+              ) : (
+                <p className="r4m-confirm-desc">
+                  Are you sure you want to delete <strong>{deletingJob.title}</strong>? This action cannot be undone.
+                </p>
+              )}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
+                {deletingJob.applicationsCount > 0 && (
+                  <button
+                    type="button"
+                    className="r4m-primary-btn"
+                    style={{ background: '#f8fafc', color: '#0f172a', border: '1px solid #cbd5e1' }}
+                    onClick={async () => {
+                      await handleToggleStatus({ ...deletingJob, status: 'active' });
+                      setDeletingJob(null);
+                    }}
+                    disabled={isDeleting}
+                  >
+                    <i className="bi bi-eye-slash"></i> Set Inactive Instead
+                  </button>
+                )}
+
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                  <button
+                    type="button"
+                    className="r4m-secondary-btn"
+                    onClick={() => setDeletingJob(null)}
+                    disabled={isDeleting}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="r4m-primary-btn"
+                    style={{ background: '#ef4444', color: '#ffffff' }}
+                    onClick={handleConfirmDelete}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? 'Deleting...' : 'Delete Job'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 5. BULK DELETE CONFIRM MODAL ==================== */}
+      {deletingBulk && (
+        <div
+          className="r4m-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !isDeleting) setDeletingBulk(false);
+          }}
+        >
+          <div className="r4m-modal-dialog r4m-modal-dialog--sm">
+            <div className="r4m-modal-body" style={{ padding: '28px 24px 20px' }}>
+              <div className="r4m-confirm-icon-box">
+                <i className="bi bi-exclamation-triangle-fill"></i>
+              </div>
+              <h3 className="r4m-confirm-title">Delete Selected Jobs</h3>
+              <p className="r4m-confirm-desc">
+                Are you sure you want to delete <strong>{selectedJobIds.length}</strong> selected job
+                posting(s)? This action cannot be undone.
+              </p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
+                <button
+                  type="button"
+                  className="r4m-secondary-btn"
+                  onClick={() => setDeletingBulk(false)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="r4m-primary-btn"
+                  style={{ background: '#ef4444', color: '#ffffff' }}
+                  onClick={handleConfirmBulkDelete}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? 'Deleting...' : 'Delete Selected'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 6. UNSAVED CHANGES WARNING DIALOG ==================== */}
+      {showUnsavedConfirm && (
+        <div
+          className="r4m-modal-backdrop"
+          style={{ zIndex: 1300 }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowUnsavedConfirm(false);
+          }}
+        >
+          <div className="r4m-modal-dialog r4m-modal-dialog--sm">
+            <div className="r4m-modal-body" style={{ padding: '28px 24px 20px' }}>
+              <div className="r4m-confirm-icon-box" style={{ background: '#fff7ed', color: '#f37021' }}>
+                <i className="bi bi-exclamation-circle-fill"></i>
+              </div>
+              <h3 className="r4m-confirm-title">Unsaved Changes</h3>
+              <p className="r4m-confirm-desc">
+                You have unsaved changes in this job posting. Are you sure you want to close and discard your edits?
+              </p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
+                <button
+                  type="button"
+                  className="r4m-secondary-btn"
+                  onClick={() => setShowUnsavedConfirm(false)}
+                >
+                  Keep Editing
+                </button>
+                <button
+                  type="button"
+                  className="r4m-primary-btn"
+                  style={{ background: '#ef4444', color: '#ffffff' }}
+                  onClick={closeJobModal}
+                >
+                  Discard Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 7. TOAST NOTIFICATIONS ==================== */}
+      {toast.show && (
+        <div className="r4m-toast-container">
+          <div className={`r4m-toast ${toast.type === 'error' ? 'r4m-toast--error' : 'r4m-toast--success'}`}>
+            <i
+              className={`bi ${
+                toast.type === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill'
+              }`}
+            ></i>
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

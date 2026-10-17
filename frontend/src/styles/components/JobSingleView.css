@@ -64,12 +64,21 @@
   letter-spacing: -0.3px;
 }
 
-.r4m-job-sec__p {
+.r4m-job-sec__p,
+.r4m-job-sec__html {
   font-size: 15.5px;
   color: #444444;
   line-height: 1.65;
   margin: 0;
   font-weight: 400;
+}
+
+.r4m-job-sec__html p {
+  margin: 0 0 10px 0;
+}
+
+.r4m-job-sec__html p:last-child {
+  margin-bottom: 0;
 }
 
 .r4m-job-sec__lead {

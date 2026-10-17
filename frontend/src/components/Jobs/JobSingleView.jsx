@@ -5,6 +5,44 @@ import r4mLogo from '../../assets/r4m-logo.png';
 import '../../styles/components/JobsDetails.css';
 import '../../styles/components/JobSingleView.css';
 
+const parseListItems = (val) => {
+  if (!val) return [];
+  if (Array.isArray(val)) {
+    return val.filter(Boolean);
+  }
+  if (typeof val === 'string' && val.trim()) {
+    if (val.includes('<li')) {
+      const items = [];
+      const liMatches = val.match(/<li[^>]*>([\s\S]*?)<\/li>/gi);
+      if (liMatches && liMatches.length > 0) {
+        liMatches.forEach((li) => {
+          const text = li.replace(/<[^>]+>/g, '').trim();
+          if (text) items.push(text);
+        });
+        if (items.length > 0) return items;
+      }
+    }
+    if (val.includes('<p')) {
+      const items = [];
+      const pMatches = val.match(/<p[^>]*>([\s\S]*?)<\/p>/gi);
+      if (pMatches && pMatches.length > 0) {
+        pMatches.forEach((p) => {
+          const text = p.replace(/<[^>]+>/g, '').trim();
+          if (text) items.push(text);
+        });
+        if (items.length > 0) return items;
+      }
+    }
+    const lines = val
+      .split('\n')
+      .map((s) => s.replace(/^[•\-\*]\s*/, '').trim())
+      .filter(Boolean);
+    if (lines.length > 0) return lines;
+    return [val.replace(/<[^>]+>/g, '').trim()];
+  }
+  return [];
+};
+
 export default function JobSingleView({ job }) {
   const [isSaved, setIsSaved] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -144,7 +182,17 @@ export default function JobSingleView({ job }) {
             {/* About the Role */}
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">About the Role:</h3>
-              <p className="r4m-job-sec__p">{currentJob.aboutRole || currentJob.desc}</p>
+              {typeof (currentJob.aboutRole || currentJob.desc) === 'string' &&
+              (currentJob.aboutRole || currentJob.desc).includes('<') ? (
+                <div
+                  className="r4m-job-sec__html"
+                  dangerouslySetInnerHTML={{
+                    __html: currentJob.aboutRole || currentJob.desc,
+                  }}
+                />
+              ) : (
+                <p className="r4m-job-sec__p">{currentJob.aboutRole || currentJob.desc}</p>
+              )}
             </div>
 
             {/* Responsibilities */}
@@ -154,8 +202,8 @@ export default function JobSingleView({ job }) {
                 Responsibilities for this position include the following key deliverables and operational workflows:
               </p>
               <ul className="r4m-job-list">
-                {Array.isArray(currentJob.responsibilities) ? (
-                  currentJob.responsibilities.map((item, idx) => (
+                {parseListItems(currentJob.responsibilities).length > 0 ? (
+                  parseListItems(currentJob.responsibilities).map((item, idx) => (
                     <li key={idx}>
                       <span className="r4m-job-list__bullet">•</span>
                       <span>{item}</span>
@@ -164,7 +212,7 @@ export default function JobSingleView({ job }) {
                 ) : (
                   <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{currentJob.responsibilities || 'Execute daily operational workflows and report progress.'}</span>
+                    <span>Execute daily operational workflows and report progress.</span>
                   </li>
                 )}
               </ul>
@@ -180,8 +228,8 @@ export default function JobSingleView({ job }) {
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">Who you are:</h3>
               <ul className="r4m-job-list">
-                {Array.isArray(currentJob.whoYouAre) && currentJob.whoYouAre.length > 0 ? (
-                  currentJob.whoYouAre.map((item, idx) => (
+                {parseListItems(currentJob.whoYouAre || currentJob.requirements).length > 0 ? (
+                  parseListItems(currentJob.whoYouAre || currentJob.requirements).map((item, idx) => (
                     <li key={idx}>
                       <span className="r4m-job-list__bullet">•</span>
                       <span>{item}</span>
@@ -190,7 +238,7 @@ export default function JobSingleView({ job }) {
                 ) : (
                   <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{currentJob.whoYouAre || currentJob.requirements || 'Relevant experience and strong communication skills.'}</span>
+                    <span>Relevant experience and strong communication skills.</span>
                   </li>
                 )}
               </ul>
@@ -200,8 +248,8 @@ export default function JobSingleView({ job }) {
             <div className="r4m-job-sec">
               <h3 className="r4m-job-sec__title">Benefits:</h3>
               <ul className="r4m-job-list">
-                {Array.isArray(currentJob.benefits) && currentJob.benefits.length > 0 ? (
-                  currentJob.benefits.map((item, idx) => (
+                {parseListItems(currentJob.benefits).length > 0 ? (
+                  parseListItems(currentJob.benefits).map((item, idx) => (
                     <li key={idx}>
                       <span className="r4m-job-list__bullet">•</span>
                       <span>{item}</span>
@@ -210,7 +258,7 @@ export default function JobSingleView({ job }) {
                 ) : (
                   <li>
                     <span className="r4m-job-list__bullet">•</span>
-                    <span>{currentJob.benefits || 'Competitive salary package, HMO medical coverage, and career growth.'}</span>
+                    <span>Competitive salary package, HMO medical coverage, and career growth.</span>
                   </li>
                 )}
               </ul>
@@ -286,7 +334,7 @@ export default function JobSingleView({ job }) {
                 </div>
                 <div className="r4m-job-spec-row">
                   <span className="r4m-job-spec-lbl">Date posted:</span>
-                  <span className="r4m-job-spec-val">{currentJob.posted}</span>
+                  <span className="r4m-job-spec-val">{currentJob.posted || currentJob.datePosted || 'Recently'}</span>
                 </div>
                 <div className="r4m-job-spec-row">
                   <span className="r4m-job-spec-lbl">Consultant:</span>
@@ -399,14 +447,23 @@ export default function JobSingleView({ job }) {
                     </div>
 
                     <div className="r4m-form-group">
-                      <label htmlFor="job-single-phone">Phone Number *</label>
+                      <label htmlFor="modal-phone">Phone Number *</label>
                       <input
-                        id="job-single-phone"
+                        id="modal-phone"
                         type="tel"
+                        inputMode="numeric"
                         required
-                        placeholder="+63 900 000 0000"
+                        maxLength={11}
+                        pattern="09[0-9]{9}"
+                        title="Enter an 11-digit number that starts with 09, like 09693163875"
+                        placeholder="09693163875"
                         value={applicant.phone}
-                        onChange={(e) => setApplicant({ ...applicant, phone: e.target.value })}
+                        onChange={(e) =>
+                          setApplicant({
+                            ...applicant,
+                            phone: e.target.value.replace(/\D/g, '').slice(0, 11),
+                          })
+                        }
                       />
                     </div>
                   </div>

@@ -79,20 +79,28 @@ const jobSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    whoYouAre: [
-      {
-        type: String,
-      },
-    ],
-    benefits: [
-      {
-        type: String,
-      },
-    ],
+    requirements: {
+      type: mongoose.Schema.Types.Mixed,
+      default: '',
+    },
+    whoYouAre: {
+      type: mongoose.Schema.Types.Mixed,
+      default: [],
+    },
+    benefits: {
+      type: mongoose.Schema.Types.Mixed,
+      default: '',
+    },
+    otherInformation: {
+      type: String,
+      default: '',
+    },
     status: {
       type: String,
-      enum: ['Active', 'Closed'],
-      default: 'Active',
+      enum: ['active', 'inactive'],
+      default: 'active',
+      lowercase: true,
+      trim: true,
     },
   },
   {

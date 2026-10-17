@@ -212,6 +212,23 @@ const seedDatabase = async () => {
       console.log('Seeded initial job listings in MongoDB database!');
     }
 
+    // One-time Migration: Ensure all existing jobs without a status or with legacy status have 'active'
+    await Job.updateMany(
+      {
+        $or: [
+          { status: { $exists: false } },
+          { status: null },
+          { status: '' },
+          { status: 'Active' },
+        ],
+      },
+      { $set: { status: 'active' } }
+    );
+    await Job.updateMany(
+      { status: { $in: ['Inactive', 'Closed'] } },
+      { $set: { status: 'inactive' } }
+    );
+
     // Seed Initial Articles / Insights into MongoDB Atlas
     const articleCount = await Article.countDocuments();
     if (articleCount === 0) {
