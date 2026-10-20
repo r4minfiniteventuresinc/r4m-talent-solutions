@@ -85,7 +85,7 @@ export default function ContactDetails() {
               <div className="r4m-contact-card__body">
                 <h3 className="r4m-contact-card__title">Head Office Location</h3>
                 <p className="r4m-contact-card__text">
-                  207A Winland Residences Tower 4 Tomas Morato, Quezon City, Philippines
+                  Winland Tower 4 Tomas Morato, Quezon City, Philippines
                 </p>
               </div>
             </div>

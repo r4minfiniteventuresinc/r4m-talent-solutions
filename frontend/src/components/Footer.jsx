@@ -52,8 +52,8 @@ export default function Footer() {
             {/* Column 4: Office Address */}
             <div className="r4m-footer__col">
               <h4 className="r4m-footer__heading">Office Address</h4>
-              <p className="r4m-footer__text">216 Winland Tower Residences 4</p>
-              <p className="r4m-footer__text">Tomas Morato, Quezon City</p>
+              <p className="r4m-footer__text">Winland Tower 4 Tomas Morato,</p>
+              <p className="r4m-footer__text">Quezon City, Philippines</p>
             </div>
 
           </div>
