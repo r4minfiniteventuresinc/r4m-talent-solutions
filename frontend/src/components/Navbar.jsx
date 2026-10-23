@@ -5,22 +5,22 @@ import r4mLogo from '../assets/r4m-logo.png';
 const ABOUT_ITEMS = [
   {
     title: 'Our Story',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'A story of people, purpose, and progress—building opportunities for a stronger tomorrow.',
     path: '/our-story',
   },
   {
     title: 'Our Mission and Vision',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'To empower businesses and professionals through flexible, scalable, and compliant talent solutions that create lasting impact.',
     path: '/mission-vision',
   },
   {
     title: 'Our Target Market',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'Empowering businesses across diverse industries with strategic workforce solutions.',
     path: '/target-market',
   },
   {
     title: 'Our Core Values',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'A commitment to excellence, integrity, and meaningful partnerships—driving success through trust, accountability, and shared growth.',
     path: '/core-values',
   },
 ];
@@ -28,22 +28,22 @@ const ABOUT_ITEMS = [
 const SERVICES_ITEMS = [
   {
     title: 'Manpower Outsourcing',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'Empowering enterprises with flexible, compliant, and scalable workforce solutions.',
     path: '/manpower-outsourcing',
   },
   {
     title: 'Recruitment Process Outsourcing',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'Transforming internal recruitment capabilities with scalable, data-driven talent acquisition solutions.',
     path: '/recruitment-process-outsourcing',
   },
   {
     title: 'Employer of Record',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'Compliant employment infrastructure, automated payroll management, and full legal HR governance.',
     path: '/employer-of-record',
   },
   {
     title: 'Find the Right Solutions',
-    desc: 'We connect businesses with the right talent through workforce solutions tailored to their needs.',
+    desc: 'Compare Manpower Outsourcing, RPO, and Employer of Record (EOR) to choose the optimal talent solution for your business.',
     path: '/compare-solutions',
   },
 ];
@@ -51,42 +51,42 @@ const SERVICES_ITEMS = [
 const INDUSTRIES_ITEMS = [
   {
     title: 'Logistics & Supply Chain',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Powering seamless end-to-end supply chain operations with vetted warehouse, fleet, freight, and distribution talent.',
     path: '/industries/logistics-supply-chain',
   },
   {
     title: 'Manufacturing',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Powering plant productivity, assembly lines, QA/QC, and industrial production with skilled operational personnel.',
     path: '/industries/manufacturing',
   },
   {
     title: 'Retail & FMCG',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Scaling store operations, merchandising, brand activation, and retail logistics across fast-moving consumer goods.',
     path: '/industries/retail-fmcg',
   },
   {
     title: 'Hospitality, Food & Beverage',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Delivering exceptional guest experiences with trained kitchen staff, service teams, event crews, and hospitality personnel.',
     path: '/industries/hospitality-food-beverage',
   },
   {
     title: 'Construction & Engineering',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Building industrial, commercial, and infrastructure projects with certified trade specialists and site engineers.',
     path: '/industries/construction-engineering',
   },
   {
     title: 'E-Commerce',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Accelerating digital storefront fulfillment, order processing, inventory sorting, and customer support.',
     path: '/industries/e-commerce',
   },
   {
     title: 'Financial Services & FinTech',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Supporting banking, fintech platforms, compliance, accounting, and financial operations with vetted professionals.',
     path: '/industries/financial-services-fintech',
   },
   {
     title: 'Technology & Digital',
-    desc: 'We connect businesses with the right talent through workforce solutions',
+    desc: 'Driving digital transformation with software engineers, IT infrastructure specialists, product managers, and tech support.',
     path: '/industries/technology-digital',
   },
 ];
@@ -225,7 +225,7 @@ function Navbar() {
                 </div>
                 <span className="r4m-mega__category">SERVICES</span>
                 <p className="r4m-mega__desc">
-                  We connect businesses with the right talent through workforce solutions tailored to their needs.
+                  Comprehensive workforce solutions, manpower outsourcing, RPO, and specialized talent acquisition tailored to drive your enterprise growth.
                 </p>
                 <Link
                   to="/services"
@@ -252,7 +252,7 @@ function Navbar() {
                 </div>
                 <span className="r4m-mega__category">INDUSTRIES</span>
                 <p className="r4m-mega__desc">
-                  We connect businesses with the right talent through workforce solutions tailored to their needs.
+                  R4M works with organizations across industries with different workforce requirements.
                 </p>
                 <a
                   href="/#industries"
