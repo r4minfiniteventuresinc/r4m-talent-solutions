@@ -97,7 +97,7 @@ export default function ContactDetails() {
               <div className="r4m-contact-card__body">
                 <h3 className="r4m-contact-card__title">Email Us</h3>
                 <p className="r4m-contact-card__text">
-                  <strong></strong>  r4minfiniteventures@gmail.com<br />
+                  <strong></strong>  luis.robedillo@r4minfiniteventures.com<br />
                 </p>
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function ContactDetails() {
               <div className="r4m-contact-card__body">
                 <h3 className="r4m-contact-card__title">Call Us</h3>
                 <p className="r4m-contact-card__text">
-                  +63 917 123 4567
+                  +63 917 194 0129
                 </p>
               </div>
             </div>
