@@ -44,7 +44,7 @@ export default function Footer() {
             <div className="r4m-footer__col">
               <h4 className="r4m-footer__heading">Contact Us</h4>
               <p className="r4m-footer__text">
-                <a href="mailto:info@r4minfiniteventuresinc.com">r4minfiniteventures@gmail.com</a>
+                <a href="mailto:info@r4minfiniteventuresinc.com">luis.robedillo@r4minfiniteventures.com</a>
               </p>
               <p className="r4m-footer__text">+63 917 194 0129</p>
             </div>
