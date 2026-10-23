@@ -27,11 +27,11 @@ connectDB();
 // Middleware
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL,
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, mobile apps, server-to-server) or any dev/client origin
+      return callback(null, true);
+    },
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -280,7 +280,7 @@ const seedDatabase = async () => {
   }
 };
 
-app.listen(PORT, async () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', async () => {
+  console.log(`Backend server running on http://0.0.0.0:${PORT} (local: http://127.0.0.1:${PORT})`);
   await seedDatabase();
 });

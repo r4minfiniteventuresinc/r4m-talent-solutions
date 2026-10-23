@@ -63,13 +63,20 @@ export default function JobsDetails() {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
             setJobs(data);
+          } else if (data && Array.isArray(data.jobs) && data.jobs.length > 0) {
+            setJobs(data.jobs);
+          } else if (Array.isArray(data) && data.length === 0) {
+            // Database is connected but has 0 active jobs
+            setJobs([]);
           } else {
             setJobs(FALLBACK_JOBS);
           }
         } else {
+          console.warn(`Jobs API returned status ${res.status}. Loading fallback listings.`);
           setJobs(FALLBACK_JOBS);
         }
       } catch (err) {
+        console.error('Failed to fetch jobs from database API:', err);
         setJobs(FALLBACK_JOBS);
       } finally {
         setLoading(false);

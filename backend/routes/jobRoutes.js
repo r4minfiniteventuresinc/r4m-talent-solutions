@@ -193,26 +193,34 @@ router.get('/', async (req, res) => {
     }
 
     // Public website: ONLY show active jobs
-    query.status = 'active';
+    query.status = { $in: ['active', 'Active', 'ACTIVE'] };
+
+    const andConditions = [];
 
     if (department && department !== 'All') {
-      query.department = department;
+      andConditions.push({ department });
     } else if (category && category !== 'All') {
-      query.$or = [
-        { category: new RegExp(category, 'i') },
-        { department: new RegExp(category, 'i') },
-      ];
+      const catRegex = new RegExp(category, 'i');
+      andConditions.push({
+        $or: [{ category: catRegex }, { department: catRegex }],
+      });
     }
 
     if (search && search.trim()) {
       const searchRegex = new RegExp(search.trim(), 'i');
-      query.$or = [
-        { title: searchRegex },
-        { location: searchRegex },
-        { category: searchRegex },
-        { department: searchRegex },
-        { desc: searchRegex },
-      ];
+      andConditions.push({
+        $or: [
+          { title: searchRegex },
+          { location: searchRegex },
+          { category: searchRegex },
+          { department: searchRegex },
+          { desc: searchRegex },
+        ],
+      });
+    }
+
+    if (andConditions.length > 0) {
+      query.$and = andConditions;
     }
 
     const publicJobs = await Job.find(query).sort({ createdAt: -1 });
@@ -299,7 +307,7 @@ router.get('/:id/applications', async (req, res) => {
   }
 });
 
-// GET single job by ID
+// GET single job by ID or Reference
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -309,11 +317,29 @@ router.get('/:id', async (req, res) => {
       job = await Job.findById(id);
     }
 
+    if (!job && id) {
+      job = await Job.findOne({
+        reference: { $regex: new RegExp(`^${id.trim()}$`, 'i') },
+      });
+    }
+
+    if (!job && id) {
+      const numericMap = {
+        '1': 'R4M-LOG-101',
+        '2': 'R4M-TECH-202',
+        '3': 'R4M-MFG-303',
+        '4': 'R4M-RET-404',
+      };
+      if (numericMap[id]) {
+        job = await Job.findOne({ reference: numericMap[id] });
+      }
+    }
+
     if (!job) {
       return res.status(404).json({ message: 'Job posting not found' });
     }
 
-    const appCount = await Application.countDocuments({ jobId: id });
+    const appCount = await Application.countDocuments({ jobId: job._id.toString() });
 
     const formattedJob = {
       id: job._id.toString(),
